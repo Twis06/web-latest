@@ -3,6 +3,23 @@
 :root {
   --background: #ffffff;
   --foreground: #171717;
+  /* Title background palettes */
+  --chiday-start:  #FFF7ED; /* soft warm */
+  --chiday-end:    #FFE4B5; /* light amber */
+  --chinight-start:#0f172a; /* deep navy */
+  --chinight-end:  #071033; /* darker blue */
+
+  /* Title background images (public folder) */
+  --chiday-image: url('/bgjpg/chi_day.jpg');
+  --chinight-image: url('/bgjpg/chi_night.jpg');
+
+  /* Glass opacity ("capacity") - adjust these to change blur overlay strength */
+  --glass-opacity-light: 0.12; /* light theme glass opacity */
+  --glass-opacity-dark: 0.18;  /* dark theme glass opacity */
+
+  /* Title background (defaults to day image, falls back to gradient) */
+  --title-bg-image: var(--chiday-image);
+  --title-bg: var(--title-bg-image);
 }
 
 @theme inline {
@@ -17,6 +34,34 @@
     --background: #0a0a0a;
     --foreground: #ededed;
   }
+}
+
+/* When project uses class-based dark mode (tailwind "dark"), override the title background */
+.dark {
+  --title-bg-image: var(--chinight-image);
+  --title-bg: var(--title-bg-image);
+}
+
+/* Helper classes for the title background + glass overlay */
+.title-bg {
+  background-image: var(--title-bg);
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+}
+
+.title-glass {
+  /* backdrop blur + translucent fill that uses the adjustable opacity vars */
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+  /* The color and opacity should adapt to light/dark via the CSS variables above */
+  background-color: rgba(255,255,255,var(--glass-opacity-light));
+  /* Slight border and soft inner glow to imply liquid edge */
+  box-shadow: inset 0 -6px 18px rgba(255,255,255,0.06);
+  border-radius: 12px;
+}
+.dark .title-glass {
+  background-color: rgba(10,20,40,var(--glass-opacity-dark));
 }
 
 body {
