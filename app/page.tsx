@@ -1,65 +1,226 @@
-import Image from "next/image";
+'use client';
 
-export default function Home() {
+import { useEffect, useRef } from 'react';
+import Lenis from '@studio-freight/lenis';
+import gsap from 'gsap';
+import { ImageTransform } from '@/app/lib/track';
+
+const Home = () => {
+  const mainRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    if (!mainRef.current) return;
+
+    // Initialize Lenis smooth scroll
+    const lenis = new Lenis({
+      lerp: 0.1,
+      smoothWheel: true,
+    });
+
+    gsap.ticker.lagSmoothing(0);
+
+    // Get all text layers
+    const textLayers = mainRef.current.querySelectorAll('[data-layer]');
+    const trackImages = mainRef.current.querySelectorAll('[data-track-image]');
+    
+    // Create an array to store track information for each layer
+    const layerTracks: any[] = [];
+    
+    textLayers.forEach((layer, index) => {
+      const layerNumber = parseInt((layer as HTMLElement).dataset.layer || '1');
+      const trackImage = trackImages[layerNumber - 1] as HTMLElement;
+      
+      if (trackImage) {
+        layerTracks.push({
+          layer: layer as HTMLElement,
+          trackImage: trackImage,
+          layerNumber: layerNumber,
+          bounds: layer.getBoundingClientRect(),
+        });
+      }
+    });
+
+    // Handle scroll to update clip-path for each image
+    lenis.on('scroll', ({ scroll }: { scroll: number }) => {
+      layerTracks.forEach(({ layer, trackImage, layerNumber }) => {
+        const layerTop = layer.offsetTop;
+        const layerHeight = layer.offsetHeight;
+        const viewportHeight = window.innerHeight;
+        
+        // Calculate scroll progress for this specific layer
+        const layerStartScroll = layerTop - viewportHeight;
+        const layerEndScroll = layerTop + layerHeight;
+        const layerDuration = layerEndScroll - layerStartScroll;
+        
+        // Progress within this layer: 0 = starts appearing, 1 = fully scrolled past
+        let progress = (scroll - layerStartScroll) / layerDuration;
+        progress = Math.max(0, Math.min(1, progress));
+        
+        let topCrop = 0;
+        let bottomCrop = 0;
+        
+        if (progress < 0.5) {
+          // First half: reveal from top
+          topCrop = (1 - progress * 2) * 100;
+          bottomCrop = 0;
+        } else if (progress < 1) {
+          // Second half: crop from bottom
+          topCrop = 0;
+          bottomCrop = (progress - 0.5) * 2 * 100;
+        } else {
+          // After this layer is done, keep it fully hidden
+          topCrop = 0;
+          bottomCrop = 100;
+        }
+        
+        trackImage.style.clipPath = `inset(${topCrop}% 0 ${bottomCrop}% 0)`;
+      });
+    });
+
+    // Animation loop
+    gsap.ticker.add((time) => {
+      lenis.raf(time * 1000);
+    });
+
+    return () => {
+      lenis.destroy();
+      gsap.ticker.remove((time) => {
+        lenis.raf(time * 1000);
+      });
+    };
+  }, []);
+
   return (
-    <div className="flex min-h-screen items-center justify-center bg-zinc-50 font-sans dark:bg-black">
-      <main className="flex min-h-screen w-full max-w-3xl flex-col items-center justify-between py-32 px-16 bg-white dark:bg-black sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={100}
-          height={20}
-          priority
-        />
-        <div className="flex flex-col items-center gap-6 text-center sm:items-start sm:text-left">
-          <h1 className="max-w-xs text-3xl font-semibold leading-10 tracking-tight text-black dark:text-zinc-50">
-            To get started, edit the page.tsx file.
+    <div ref={mainRef} className="w-full bg-black text-white">
+      {/* Hero Section - Ben Li */}
+      <section className="h-screen flex items-center justify-center px-4 relative z-40 bg-black">
+        <div className="text-center space-y-4">
+          <h1 className="text-6xl md:text-8xl font-light tracking-tight opacity-0" data-hero-text="name">
+            Ben Li 
           </h1>
-          <p className="max-w-md text-lg leading-8 text-zinc-600 dark:text-zinc-400">
-            Looking for a starting point or more instructions? Head over to{" "}
-            <a
-              href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Templates
-            </a>{" "}
-            or the{" "}
-            <a
-              href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Learning
-            </a>{" "}
-            center.
+          <p className="text-lg md:text-2xl font-light text-gray-400 opacity-0" data-hero-text="title">
+            Developer & Photographer
           </p>
+          <div className="text-sm text-gray-500 opacity-0 pt-8" data-hero-text="info">
+            2025
+          </div>
         </div>
-        <div className="flex flex-col gap-4 text-base font-medium sm:flex-row">
-          <a
-            className="flex h-12 w-full items-center justify-center gap-2 rounded-full bg-foreground px-5 text-background transition-colors hover:bg-[#383838] dark:hover:bg-[#ccc] md:w-[158px]"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={16}
-              height={16}
-            />
-            Deploy Now
-          </a>
-          <a
-            className="flex h-12 w-full items-center justify-center rounded-full border border-solid border-black/[.08] px-5 transition-colors hover:border-transparent hover:bg-black/[.04] dark:border-white/[.145] dark:hover:bg-[#1a1a1a] md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Documentation
-          </a>
+      </section>
+
+      {/* Fixed Image Container - All images here, track drives clip-path */}
+      <div className="fixed-images-container">
+        <div data-track-image="1" className="track-image">
+          <img 
+            src="/photography/DSC04715-min.jpg" 
+            alt="Project Alpha" 
+            className="w-full h-full object-cover"
+          />
         </div>
-      </main>
+        <div data-track-image="2" className="track-image">
+          <img 
+            src="/photography/DSC04760-min.jpg" 
+            alt="Project Beta" 
+            className="w-full h-full object-cover"
+          />
+        </div>
+        <div data-track-image="3" className="track-image">
+          <img 
+            src="/photography/DSC04767-min.jpg" 
+            alt="Project Gamma" 
+            className="w-full h-full object-cover"
+          />
+        </div>
+      </div>
+
+      {/* Text Layers - These scroll and trigger image reveals */}
+      
+      {/* Layer 1: Project Alpha */}
+      <section className="text-layer h-screen flex items-center justify-center relative z-500" data-layer="1">
+        <h2 className="text-6xl md:text-8xl font-light text-white text-center">Project Alpha</h2>
+      </section>
+
+      {/* Layer 2: Project Beta */}
+      <section className="text-layer h-screen flex items-center justify-center relative z-40" data-layer="2">
+        <h2 className="text-6xl md:text-8xl font-light text-white text-center">Project Beta</h2>
+      </section>
+
+      {/* Layer 3: Project Gamma */}
+      <section className="text-layer h-screen flex items-center justify-center relative z-40" data-layer="3">
+        <h2 className="text-6xl md:text-8xl font-light text-white text-center">Project Gamma</h2>
+      </section>
+
+      {/* Footer */}
+      <section className="bg-black flex items-center justify-center relative z-10 py-100">
+        <div className="text-center space-y-8 max-w-3xl px-4 h-full flex flex-col justify-center">
+          <h2 className="text-5xl md:text-7xl font-light">Get in touch</h2>
+          <p className="text-gray-400 text-lg md:text-xl leading-relaxed">
+            Let's create something amazing together. Whether you have a project in mind or just want to chat about photography and design, I'd love to hear from you.
+          </p>
+          <div className="space-y-4 pt-8">
+            <p className="text-gray-500">📧 Email: hello@benli.com</p>
+            <p className="text-gray-500">🔗 LinkedIn | Instagram | GitHub</p>
+          </div>
+          <p className="text-gray-600 text-sm pt-12">© 2025 Ben Li. All rights reserved.</p>
+        </div>
+      </section>
+
+      <style jsx>{`
+        /* Fixed Images Container - stays in place, above text */
+        .fixed-images-container {
+          position: fixed;
+          top: 50%;
+          left: 50%;
+          transform: translate(-50%, -50%);
+          width: 30vw;
+          aspect-ratio: 1/1.5;
+          max-height: 80vh;
+          z-index: 50;
+          pointer-events: none;
+        }
+
+        /* Individual track images */
+        .track-image {
+          position: absolute;
+          width: 100%;
+          height: 100%;
+          clip-path: inset(100% 0 100% 0);
+          overflow: hidden;
+          top: 0;
+          left: 0;
+        }
+
+        .track-image img {
+          width: 100%;
+          height: 100%;
+          object-fit: cover;
+          object-position: center;
+        }
+
+        /* Text layers - scroll on top but below images */
+        .text-layer {
+          position: relative;
+          background: transparent;
+          z-index: 70;
+        }
+
+        [data-hero-text] {
+          display: inline-block;
+          animation: fadeIn 0.8s ease-out forwards;
+        }
+
+        @keyframes fadeIn {
+          from {
+            opacity: 0;
+            transform: translateY(20px);
+          }
+          to {
+            opacity: 1;
+            transform: translateY(0);
+          }
+        }
+      `}</style>
     </div>
   );
-}
+};
+
+export default Home;
