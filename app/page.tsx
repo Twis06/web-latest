@@ -77,16 +77,20 @@ const Home = () => {
       });
     });
 
-    // Animation loop
-    gsap.ticker.add((time) => {
+    // Animation loop function
+    const handleTicker = (time: number) => {
       lenis.raf(time * 1000);
-    });
+    };
+
+    gsap.ticker.add(handleTicker);
 
     return () => {
-      lenis.destroy();
-      gsap.ticker.remove((time) => {
-        lenis.raf(time * 1000);
-      });
+      try {
+        gsap.ticker.remove(handleTicker);
+        lenis.destroy();
+      } catch (e) {
+        console.error('Cleanup error:', e);
+      }
     };
   }, []);
 
@@ -135,17 +139,17 @@ const Home = () => {
       {/* Text Layers - These scroll and trigger image reveals */}
       
       {/* Layer 1: Project Alpha */}
-      <section className="text-layer h-screen flex items-center justify-center relative z-500" data-layer="1">
+      <section className="text-layer h-screen flex items-center justify-center relative z-20 pt-20" data-layer="1">
         <h2 className="text-6xl md:text-8xl font-light text-white text-center">Project Alpha</h2>
       </section>
 
       {/* Layer 2: Project Beta */}
-      <section className="text-layer h-screen flex items-center justify-center relative z-40" data-layer="2">
+      <section className="text-layer h-screen flex items-center justify-center relative z-20 pt-20" data-layer="2">
         <h2 className="text-6xl md:text-8xl font-light text-white text-center">Project Beta</h2>
       </section>
 
       {/* Layer 3: Project Gamma */}
-      <section className="text-layer h-screen flex items-center justify-center relative z-40" data-layer="3">
+      <section className="text-layer h-screen flex items-center justify-center relative z-20 pt-20" data-layer="3">
         <h2 className="text-6xl md:text-8xl font-light text-white text-center">Project Gamma</h2>
       </section>
 
