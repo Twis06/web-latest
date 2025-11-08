@@ -1,0 +1,11 @@
+- Loading mg animation 
+- Transition when switching pages
+- has to be very smooth 
+- simplistic 
+- need to handle lots of images
+- deployed on vercel & github repo 
+- small pet
+- about / cv / projects / photography / 
+- scroll down is for photography works (https://gabrielcontassot.com/)
+- smooth text apperance 
+- 
