@@ -7,23 +7,29 @@ import PageTransition from '../components/PageTransition';
 const Projects = () => {
   const projects = [
     {
-      title: 'Project One',
-      description: 'A brief description of your first project.',
-      tags: ['React', 'TypeScript', 'Tailwind'],
+      title: 'Projects',
+      description: 'Current Under Development for markdown support, see cv page for more info',
+      tags: [],
       link: '#',
-    },
-    {
-      title: 'Project Two',
-      description: 'A brief description of your second project.',
-      tags: ['Next.js', 'PostgreSQL'],
-      link: '#',
-    },
-    {
-      title: 'Project Three',
-      description: 'A brief description of your third project.',
-      tags: ['React', 'Framer Motion', 'Design'],
-      link: '#',
-    },
+    }
+    // {
+    //   title: 'Project One',
+    //   description: 'A brief description of your first project.',
+    //   tags: ['React', 'TypeScript', 'Tailwind'],
+    //   link: '#',
+    // },
+    // {
+    //   title: 'Project Two',
+    //   description: 'A brief description of your second project.',
+    //   tags: ['Next.js', 'PostgreSQL'],
+    //   link: '#',
+    // },
+    // {
+    //   title: 'Project Three',
+    //   description: 'A brief description of your third project.',
+    //   tags: ['React', 'Framer Motion', 'Design'],
+    //   link: '#',
+    // },
   ];
 
   return (

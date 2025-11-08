@@ -145,17 +145,17 @@ const Home = () => {
       
       {/* Layer 1: Project Alpha */}
       <section className="text-layer h-screen flex items-center justify-center relative z-20 pt-20" data-layer="1">
-        <h2 className="text-6xl md:text-8xl font-light text-white text-center">Project Alpha</h2>
+        <h2 className="text-6xl md:text-8xl font-light text-white text-center">2025</h2>
       </section>
 
       {/* Layer 2: Project Beta */}
       <section className="text-layer h-screen flex items-center justify-center relative z-20 pt-20" data-layer="2">
-        <h2 className="text-6xl md:text-8xl font-light text-white text-center">Project Beta</h2>
+        <h2 className="text-6xl md:text-8xl font-light text-white text-center">2024</h2>
       </section>
 
       {/* Layer 3: Project Gamma */}
       <section className="text-layer h-screen flex items-center justify-center relative z-20 pt-20" data-layer="3">
-        <h2 className="text-6xl md:text-8xl font-light text-white text-center">Project Gamma</h2>
+        <h2 className="text-6xl md:text-8xl font-light text-white text-center">2023</h2>
       </section>
 
       {/* Footer */}
@@ -163,11 +163,11 @@ const Home = () => {
         <div className="text-center space-y-8 max-w-3xl px-4 h-full flex flex-col justify-center">
           <h2 className="text-5xl md:text-7xl font-light">Get in touch</h2>
           <p className="text-gray-400 text-lg md:text-xl leading-relaxed">
-            Let's create something amazing together. Whether you have a project in mind or just want to chat about photography and design, I'd love to hear from you.
+            Contact me if you have a project in mind. 
           </p>
           <div className="space-y-4 pt-8">
-            <p className="text-gray-500">📧 Email: hello@benli.com</p>
-            <p className="text-gray-500">🔗 LinkedIn | Instagram | GitHub</p>
+            <p className="text-gray-500"><a href="mailto:twislpy01@icloud.com">Email</a></p>
+            <p className="text-gray-500"><a href="https://github.com/Twis06">GitHub</a></p>
           </div>
           <p className="text-gray-600 text-sm pt-12">© 2025 Ben Li. All rights reserved.</p>
         </div>

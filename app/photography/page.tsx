@@ -33,10 +33,20 @@ const Photography = () => {
       });
   }, []);
 
-  // Filter photos by category
+  // Shuffle function for randomizing photos
+  const shuffleArray = (array: Photo[]) => {
+    const shuffled = [...array];
+    for (let i = shuffled.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
+    }
+    return shuffled;
+  };
+
+  // Filter photos by category and shuffle
   const filteredPhotos = selectedCategory === 'all' 
-    ? photos 
-    : photos.filter(p => p.category === selectedCategory);
+    ? shuffleArray(photos)
+    : shuffleArray(photos.filter(p => p.category === selectedCategory));
 
   return (
     <div className="min-h-screen bg-white dark:bg-black px-4 sm:px-6 lg:px-8 py-20">
@@ -96,7 +106,7 @@ const Photography = () => {
         {/* Empty State */}
         {!loading && filteredPhotos.length === 0 && (
           <div className="text-center py-20 text-gray-500 dark:text-gray-400">
-            No photos found. Add images to /public/photography/{selectedCategory !== 'all' ? selectedCategory : '[category]'}/
+            No photos found. 
           </div>
         )}
 

@@ -24,7 +24,7 @@ const Navigation = () => {
         <div className="flex justify-between items-center h-14">
           {/* Logo/Name */}
           <Link href="/" className="text-lg font-bold tracking-tight">
-            LPY
+            TWIS
           </Link>
 
           {/* Desktop Navigation */}
