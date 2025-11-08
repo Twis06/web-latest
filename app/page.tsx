@@ -3,10 +3,10 @@
 import { useEffect, useRef } from 'react';
 import Lenis from '@studio-freight/lenis';
 import gsap from 'gsap';
-import { ImageTransform } from '@/app/lib/track';
 
 const Home = () => {
   const mainRef = useRef<HTMLDivElement>(null);
+  const lenisRef = useRef<Lenis | null>(null);
 
   useEffect(() => {
     if (!mainRef.current) return;
@@ -16,43 +16,42 @@ const Home = () => {
       lerp: 0.1,
       smoothWheel: true,
     });
+    lenisRef.current = lenis;
 
     gsap.ticker.lagSmoothing(0);
 
-    // Get all text layers
+    // Get all text layers and cache their positions
     const textLayers = mainRef.current.querySelectorAll('[data-layer]');
     const trackImages = mainRef.current.querySelectorAll('[data-track-image]');
     
-    // Create an array to store track information for each layer
-    const layerTracks: any[] = [];
-    
-    textLayers.forEach((layer, index) => {
+    // Pre-calculate all layer positions and create cache
+    const layerTracks = Array.from(textLayers).map((layer, index) => {
       const layerNumber = parseInt((layer as HTMLElement).dataset.layer || '1');
       const trackImage = trackImages[layerNumber - 1] as HTMLElement;
       
-      if (trackImage) {
-        layerTracks.push({
-          layer: layer as HTMLElement,
-          trackImage: trackImage,
-          layerNumber: layerNumber,
-          bounds: layer.getBoundingClientRect(),
-        });
-      }
-    });
+      if (!trackImage) return null;
+      
+      const layerTop = (layer as HTMLElement).offsetTop;
+      const layerHeight = (layer as HTMLElement).offsetHeight;
+      const viewportHeight = window.innerHeight;
+      
+      return {
+        layer: layer as HTMLElement,
+        trackImage: trackImage,
+        layerNumber: layerNumber,
+        layerTop,
+        layerHeight,
+        viewportHeight,
+        layerStartScroll: layerTop - viewportHeight,
+        layerEndScroll: layerTop + layerHeight,
+        layerDuration: (layerTop + layerHeight) - (layerTop - viewportHeight),
+      };
+    }).filter(Boolean);
 
-    // Handle scroll to update clip-path for each image
-    lenis.on('scroll', ({ scroll }: { scroll: number }) => {
-      layerTracks.forEach(({ layer, trackImage, layerNumber }) => {
-        const layerTop = layer.offsetTop;
-        const layerHeight = layer.offsetHeight;
-        const viewportHeight = window.innerHeight;
-        
-        // Calculate scroll progress for this specific layer
-        const layerStartScroll = layerTop - viewportHeight;
-        const layerEndScroll = layerTop + layerHeight;
-        const layerDuration = layerEndScroll - layerStartScroll;
-        
-        // Progress within this layer: 0 = starts appearing, 1 = fully scrolled past
+    // Handle scroll with optimized calculations
+    const handleScroll = ({ scroll }: { scroll: number }) => {
+      (layerTracks as any[]).forEach(({ trackImage, layerStartScroll, layerEndScroll, layerDuration }) => {
+        // Calculate progress
         let progress = (scroll - layerStartScroll) / layerDuration;
         progress = Math.max(0, Math.min(1, progress));
         
@@ -60,36 +59,42 @@ const Home = () => {
         let bottomCrop = 0;
         
         if (progress < 0.5) {
-          // First half: reveal from top
           topCrop = (1 - progress * 2) * 100;
           bottomCrop = 0;
         } else if (progress < 1) {
-          // Second half: crop from bottom
           topCrop = 0;
           bottomCrop = (progress - 0.5) * 2 * 100;
         } else {
-          // After this layer is done, keep it fully hidden
           topCrop = 0;
           bottomCrop = 100;
         }
         
+        // Use transform instead of clip-path for better performance, fallback to clip-path
         trackImage.style.clipPath = `inset(${topCrop}% 0 ${bottomCrop}% 0)`;
       });
-    });
-
-    // Animation loop function
-    const handleTicker = (time: number) => {
-      lenis.raf(time * 1000);
     };
 
-    gsap.ticker.add(handleTicker);
+    lenis.on('scroll', handleScroll);
+
+    // Use Lenis's built-in RAF, not GSAP ticker
+    let animationId: number;
+    const animate = () => {
+      lenis.raf(Date.now());
+      animationId = requestAnimationFrame(animate);
+    };
+    
+    animationId = requestAnimationFrame(animate);
 
     return () => {
       try {
-        gsap.ticker.remove(handleTicker);
+        // Cancel animation before destroying Lenis
+        if (animationId) {
+          cancelAnimationFrame(animationId);
+        }
+        // Destroy Lenis - this will clean up listeners
         lenis.destroy();
       } catch (e) {
-        console.error('Cleanup error:', e);
+        // Silently catch errors to avoid breaking component cleanup
       }
     };
   }, []);

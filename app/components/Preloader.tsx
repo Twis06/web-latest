@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useRef } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import gsap from 'gsap';
 
 interface PreloaderProps {
@@ -10,12 +10,13 @@ interface PreloaderProps {
 const Preloader = ({ onComplete }: PreloaderProps) => {
   const containerRef = useRef<HTMLDivElement>(null);
   const numberRef = useRef<HTMLDivElement>(null);
+  const [isVisible, setIsVisible] = useState(true);
 
   useEffect(() => {
     if (!containerRef.current || !numberRef.current) return;
 
     const preloadValues = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 20, 23, 30, 50, 70, 80, 100];
-    const totalDuration = 2.8;
+    const totalDuration = 3.5; // Increased for smoother transitions
     const splitDuration = totalDuration / preloadValues.length;
 
     let count = 0;
@@ -32,7 +33,7 @@ const Preloader = ({ onComplete }: PreloaderProps) => {
       }
 
       number.textContent = displayValue.toString();
-      number.style.transform = `translateX(${displayValue}%)`;
+      // Keep number still, no translation
     };
 
     const destroy = () => {
@@ -43,9 +44,8 @@ const Preloader = ({ onComplete }: PreloaderProps) => {
           duration: 0.8,
           ease: 'slow.inOut',
           onComplete: () => {
-            if (containerRef.current) {
-              containerRef.current.remove();
-            }
+            // Use state to unmount instead of removing DOM directly
+            setIsVisible(false);
             if (onComplete) {
               onComplete();
             }
@@ -69,17 +69,22 @@ const Preloader = ({ onComplete }: PreloaderProps) => {
     };
   }, [onComplete]);
 
+  // Don't render if not visible
+  if (!isVisible) {
+    return null;
+  }
+
   return (
     <div
       ref={containerRef}
       className="fixed inset-0 z-[9999] bg-white dark:bg-black flex items-center justify-center"
     >
       <div className="flex flex-col items-center justify-center space-y-8">
-        {/* Number display */}
-        <div className="relative h-24 overflow-hidden">
+        {/* Number display - smaller and centered */}
+        <div className="relative h-16 overflow-hidden">
           <div
             ref={numberRef}
-            className="text-7xl md:text-8xl font-light tracking-tight text-black dark:text-white transition-transform duration-100"
+            className="text-4xl md:text-5xl font-light tracking-tight text-black dark:text-white transition-all duration-300 ease-out"
             style={{ transform: 'translateX(0%)' }}
           >
             0
