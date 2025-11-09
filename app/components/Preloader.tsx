@@ -15,8 +15,8 @@ const Preloader = ({ onComplete }: PreloaderProps) => {
   useEffect(() => {
     if (!containerRef.current || !numberRef.current) return;
 
-    const preloadValues = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 20, 23, 30, 50, 70, 80, 100];
-    const totalDuration = 3.5; // Increased for smoother transitions
+    const preloadValues = [1, 2, 3, 4, 5, 6, 10, 20, 30, 50, 70, 100];
+    const totalDuration = 0.6; // Increased for smoother transitions
     const splitDuration = totalDuration / preloadValues.length;
 
     let count = 0;
