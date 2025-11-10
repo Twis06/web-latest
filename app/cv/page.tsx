@@ -76,7 +76,7 @@ const CV = () => {
                 </ul>
               </div>
               <div className="border-l-2 border-gray-300 dark:border-gray-700 pl-6">
-                <h3 className="text-xl font-light mb-1">Research Intern (Algorithm), Differential Robotics, Hangzhou</h3>
+                <h3 className="text-xl font-light mb-1">Research Intern (Algorithm), Differential Robotics</h3>
                 <p className="text-gray-600 dark:text-gray-400 text-sm mb-4">June 2025 - August 2025</p>
                 <p className="text-sm mb-3">Worked on two autonomous drone projects:</p>
                 <ul className="space-y-2 text-sm">
