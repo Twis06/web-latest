@@ -60,7 +60,7 @@ const Photography = () => {
         >
           <h1 className="text-6xl md:text-7xl font-light mb-2">Photography</h1>
           <p className="text-gray-600 dark:text-gray-400 font-light">
-            A visual collection of moments captured through my lens
+            moments captured through my lens
           </p>
         </motion.div>
 

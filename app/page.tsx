@@ -108,7 +108,7 @@ const Home = () => {
             Ben Li 
           </h1>
           <p className="text-lg md:text-2xl font-light text-gray-400 opacity-0" data-hero-text="title">
-            Developer & Photographer
+            Developer & <a href="/photography">Photographer</a>
           </p>
           <div className="text-sm text-gray-500 opacity-0 pt-8" data-hero-text="info">
             2025
@@ -145,26 +145,26 @@ const Home = () => {
       
       {/* Layer 1: Project Alpha */}
       <section className="text-layer h-screen flex items-center justify-center relative z-20 pt-20" data-layer="1">
-        <h2 className="text-6xl md:text-8xl font-light text-white text-center">2025</h2>
+        <h2 className="text-6xl md:text-8xl font-light text-white text-center"><a href="/photography">2025</a></h2>
       </section>
 
       {/* Layer 2: Project Beta */}
       <section className="text-layer h-screen flex items-center justify-center relative z-20 pt-20" data-layer="2">
-        <h2 className="text-6xl md:text-8xl font-light text-white text-center">2024</h2>
+        <h2 className="text-6xl md:text-8xl font-light text-white text-center"><a href="/photography">2024</a></h2>
       </section>
 
       {/* Layer 3: Project Gamma */}
       <section className="text-layer h-screen flex items-center justify-center relative z-20 pt-20" data-layer="3">
-        <h2 className="text-6xl md:text-8xl font-light text-white text-center">2023</h2>
+        <h2 className="text-6xl md:text-8xl font-light text-white text-center"><a href="/photography">2023</a></h2>
       </section>
 
       {/* Footer */}
       <section className="bg-black flex items-center justify-center relative z-10 py-100">
         <div className="text-center space-y-8 max-w-3xl px-4 h-full flex flex-col justify-center">
           <h2 className="text-5xl md:text-7xl font-light">Get in touch</h2>
-          <p className="text-gray-400 text-lg md:text-xl leading-relaxed">
-            Contact me if you have a project in mind. 
-          </p>
+            <p className="text-gray-400 text-lg md:text-xl leading-relaxed">
+            If you have a project in mind, feel free to reach out. I'm always eager to learn and explore new ideas.
+            </p>
           <div className="space-y-4 pt-8">
             <p className="text-gray-500"><a href="mailto:twislpy01@icloud.com">Email</a></p>
             <p className="text-gray-500"><a href="https://github.com/Twis06">GitHub</a></p>
