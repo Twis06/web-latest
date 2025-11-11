@@ -10,6 +10,16 @@
 !.yarn/releases
 !.yarn/versions
 
+/portfolio-scraper/node_modules
+/portfolio-scraper/.pnp
+/portfolio-scraper/.pnp.*
+/portfolio-scraper/.yarn/*
+/portfolio-scraper/!.yarn/patches
+/portfolio-scraper/!.yarn/plugins
+/portfolio-scraper/!.yarn/releases
+/portfolio-scraper/downloaded-images
+/portfolio-scraper/!.yarn/versions
+
 # testing
 /coverage
 
