@@ -227,7 +227,17 @@ const Home = () => {
             transform: translateY(0);
           }
         }
+
+        /* Map widget styling */
+        #mapmyvisitors {
+          width: 30%;
+          max-width: 400px;
+        }
       `}</style>
+
+      <div style={{ padding: '40px 20px', textAlign: 'center' }}>
+        <script type="text/javascript" id="mapmyvisitors" src="//mapmyvisitors.com/map.js?d=VddbJxbC9o8Uj5cz4CpMpK6-cYUTLXt5jZ-6kZhRcKA&cl=ffffff&w=a"></script>
+      </div>
     </div>
   );
 };
