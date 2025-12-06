@@ -60,7 +60,7 @@ const CV = () => {
               <div className="border-l-2 border-gray-300 dark:border-gray-700 pl-6 flex gap-6 items-start">
                 <div className="flex-1">
                   <h3 className="text-xl font-light mb-1">Undergraduate Research Assistant, <a href="https://www.xenobot.group/" target="_blank" rel="noopener noreferrer" className="text-[#434E78] dark:text-[#7A84B8]">Xenobot Lab</a></h3>
-                  <p className="text-gray-600 dark:text-gray-400 text-sm mb-4">October 2024 - Present</p>
+                  <p className="text-gray-600 dark:text-gray-400 text-sm mb-4">October 2025 - Present</p>
                   <ul className="space-y-2 text-sm">
                     <li>• Developed and implemented a UWB-based localization system using the DW1000 transceiver</li>
                     <li>• Achieved accurate 3D positioning with a three-anchor, one-tag setup</li>
