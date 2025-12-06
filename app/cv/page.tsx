@@ -144,14 +144,9 @@ const CV = () => {
                   Visualized Results →
                 </a>
                 <ul className="space-y-2 text-sm mb-6">
-                  <li>• Developed an End-to-End vision-based navigation system enabling drones to traverse 85° tilted frames at 4–6 m/s with near-100% success under standard conditions.</li>
-                  <li>• Developed a custom deflicker algorithm to mitigate indoor lighting flicker, ensuring stable frame detection.</li>
-                  <li>• Designed and trained CNN-based segmentation models with multi-color frame detection, incorporating extensive data augmentation (noise, brightness shifts, geometric transforms) to enhance robustness.</li>
-                  <li>• Optimized MobilenetV3 + DeeplabV3+ backbone by reducing network depth; achieved ~3ms inference latency on Jetson Xavier NX using FP16 TensorRT quantization.</li>
-                  <li>• Trained control policy in simulation with RL, leveraging shaped rewards (center alignment, collision penalties, smoothness constraints, Distillation-awareness Regularization).</li>
-                  <li>• Deployed segmentation and policy jointly with combined latency &lt;16ms, enabling &gt;60Hz control frequency for onboard flight.</li>
-                  <li>• Conducted extensive real-world tests, validating segmentation robustness and system stability in high-speed traversal.</li>
-                  <li>• Acquired strong manual piloting skills, supporting iterative testing and system verification.</li>
+                  <li>• Developed an end-to-end vision navigation system enabling drones to traverse 85° tilted frames at 4–6 m/s with near-100% success.</li>
+                  <li>• Optimized MobileNetV3 + DeepLabV3+ backbone on Jetson Xavier NX via TensorRT, achieving ~3ms inference latency and &gt;60Hz control frequency.</li>
+                  <li>• Trained RL control policies with shaped rewards and distillation-aware regularization to ensure stable high-speed maneuvering.</li>
                 </ul>
                 <div className="grid grid-cols-2 gap-4 mb-8">
                   <img src="/cv/takeoff-1-80deg.gif" alt="Drone takeoff 1" className="w-full h-auto rounded" />
