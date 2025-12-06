@@ -23,6 +23,8 @@
 /build
 
 # misc
+/video_processor
+# misc
 .DS_Store
 *.pem
 

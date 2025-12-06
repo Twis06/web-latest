@@ -19,9 +19,9 @@ const CV = () => {
             <h1 className="text-5xl md:text-6xl font-light mb-2">Peiyang (Ben) Li</h1>
             <p className="text-gray-600 dark:text-gray-400 font-light text-lg">Student</p>
             <div className="flex gap-6 mt-4 text-sm">
-              <a href="mailto:twislpy01@icloud.com" className="hover:underline">Email</a>
+              <a href="mailto:lipy.5101@gmail.com" className="hover:underline">Email</a>
               <a href="https://github.com/Twis06" target="_blank" rel="noopener noreferrer" className="hover:underline">GitHub</a>
-              <a href="https://peiyangli104.cargo.site/" target="_blank" rel="noopener noreferrer" className="hover:underline">Portfolio</a>
+              {/* <a href="https://peiyangli104.cargo.site/" target="_blank" rel="noopener noreferrer" className="hover:underline">Portfolio</a> */}
             </div>
           </motion.div>
 
@@ -57,24 +57,63 @@ const CV = () => {
           >
             <h2 className="text-3xl font-light mb-8">Work Experience</h2>
             <div className="space-y-12">
-              <div className="border-l-2 border-gray-300 dark:border-gray-700 pl-6">
-                <h3 className="text-xl font-light mb-1">Undergraduate Research Assistant, Xenobot Lab</h3>
-                <p className="text-gray-600 dark:text-gray-400 text-sm mb-4">October 2025 - Present</p>
-                <ul className="space-y-2 text-sm">
-                  <li>• Developed and implemented a UWB-based localization system using the DW1000 transceiver</li>
-                  <li>• Achieved accurate 3D positioning with a three-anchor, one-tag setup</li>
-                  {/* <li>• Optimized the communication protocol to enhance system efficiency and reliability</li> */}
-                </ul>
+              <div className="border-l-2 border-gray-300 dark:border-gray-700 pl-6 flex gap-6 items-start">
+                <div className="flex-1">
+                  <h3 className="text-xl font-light mb-1">Undergraduate Research Assistant, <a href="https://www.xenobot.group/" target="_blank" rel="noopener noreferrer" className="text-[#434E78] dark:text-[#7A84B8]">Xenobot Lab</a></h3>
+                  <p className="text-gray-600 dark:text-gray-400 text-sm mb-4">October 2024 - Present</p>
+                  <ul className="space-y-2 text-sm">
+                    <li>• Developed and implemented a UWB-based localization system using the DW1000 transceiver</li>
+                    <li>• Achieved accurate 3D positioning with a three-anchor, one-tag setup</li>
+                    <li>• Working on <a href="https://modularlegs.github.io/" target="_blank" rel="noopener noreferrer">modular robot</a> with PHD</li>
+                    <li>• Working on using RL methods to train in real life of a single motor ball with IMU data</li>
+                    {/* <li>• Optimized the communication protocol to enhance system efficiency and reliability</li> */}
+                  </ul>
+                </div>
+                <video
+                  src="/cv/uwb_simulation.mp4"
+                  autoPlay
+                  loop
+                  muted
+                  className="w-60 h-auto rounded flex-shrink-0"
+                />
               </div>
-              <div className="border-l-2 border-gray-300 dark:border-gray-700 pl-6">
-                <h3 className="text-xl font-light mb-1">Research Intern, Machine Learning & Language Lab, Northwestern University</h3>
-                <p className="text-gray-600 dark:text-gray-400 text-sm mb-4">September 2025 - Present</p>
-                <ul className="space-y-2 text-sm">
+                <div className="border-l-2 border-gray-300 dark:border-gray-700 pl-6 flex gap-6 items-start">
+                <div className="flex-1">
+                  <h3 className="text-xl font-light mb-1">Engineer, <a href="https://www.hapte.org/" target="_blank" rel="noopener noreferrer" className="text-[#434E78] dark:text-[#7A84B8]">HaptE</a></h3>
+                  <p className="text-gray-600 dark:text-gray-400 text-sm mb-4">September 2025 - Present</p>
+                  <ul className="space-y-2 text-sm">
+                  <li>• Developed edge AI inference pipeline for warehouse automation using TensorFlow on Nvidia Jetson Orin Nano</li>
+                  <li>• Trained and optimized multi-modal recognition system (segmentation, OCR, QR/barcode detection) for real-time local processing</li>
+                  <li>• Built multi-edge device coordination system with AWS IoT Core for distributed warehouse pick-and-place operations</li>
+                  <li>• Achieved fully local inference without cloud dependency, enabling autonomous item tracking and error prevention from camera input alone</li>
+                  </ul>
+                </div>
+                <video
+                  src="/cv/warehouse4096A.mp4"
+                  autoPlay
+                  loop
+                  muted
+                  className="w-60 h-auto rounded flex-shrink-0"
+                />
+              </div>
+                <div className="border-l-2 border-gray-300 dark:border-gray-700 pl-6 flex gap-6 items-start">
+                <div className="flex-1">
+                  <h3 className="text-xl font-light mb-1">Research Intern, Machine Learning & Language Lab, Northwestern University</h3>
+                  <p className="text-gray-600 dark:text-gray-400 text-sm mb-4">September 2025 - Present</p>
+                  <ul className="space-y-2 text-sm">
                   <li>• Researching spatial intelligence agents and helping PHD research projects in embodied AI</li>
                   <li>• Developing comprehensive training playground for object manipulation using Genesis physics simulator</li>
                   <li>• Designed automated system to import 3D objects, generate target/initial states, and produce optimal image-text sequences for standardized multi-modal training pipelines</li>
-                </ul>
-              </div>
+                  </ul>
+                </div>
+                <video
+                  src="/cv/genesis.mp4"
+                  autoPlay
+                  loop
+                  muted
+                  className="w-50 h-auto rounded flex-shrink-0"
+                />
+                </div>
               <div className="border-l-2 border-gray-300 dark:border-gray-700 pl-6">
                 <h3 className="text-xl font-light mb-1">Research Intern (Algorithm), Differential Robotics</h3>
                 <p className="text-gray-600 dark:text-gray-400 text-sm mb-4">June 2025 - August 2025</p>
@@ -192,7 +231,7 @@ const CV = () => {
             <div className="border-l-2 border-gray-300 dark:border-gray-700 pl-6">
               <h3 className="text-xl font-light mb-4">Mathematics & Modeling</h3>
               <ul className="space-y-2 text-sm">
-                <li>• High School Mathematical Contest in Modeling (HiMCM): Outstanding (Global Top 1%)</li>
+                <li>• High School Mathematical Contest in Modeling (HiMCM): Outstanding (Global Top 1%) <a href="/cv/14140.pdf" target="_blank" rel="noopener noreferrer" className="text-blue-600 dark:text-blue-400 hover:underline">[pdf link]</a></li>
                 <li>• American Regions Mathematics League (ARML): Global Top 10</li>
               </ul>
             </div>
