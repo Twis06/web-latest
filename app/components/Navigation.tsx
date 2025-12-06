@@ -1,13 +1,46 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { motion } from 'framer-motion';
+import { Sun, Moon } from 'lucide-react';
 
 const Navigation = () => {
   const pathname = usePathname();
   const [isOpen, setIsOpen] = useState(false);
+  const [theme, setTheme] = useState<'light' | 'dark'>('dark');
+
+  useEffect(() => {
+    // Initialize theme state
+    const currentTheme = document.documentElement.getAttribute('data-theme') as 'light' | 'dark';
+    if (currentTheme) {
+      setTheme(currentTheme);
+    } else {
+      // Fallback if script didn't run or something
+      const systemTheme = window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+      setTheme(systemTheme);
+    }
+
+    // Listen for system changes
+    const mediaQuery = window.matchMedia('(prefers-color-scheme: dark)');
+    const handleChange = (e: MediaQueryListEvent) => {
+      if (!localStorage.getItem('theme-preference')) {
+        const newTheme = e.matches ? 'dark' : 'light';
+        setTheme(newTheme);
+        document.documentElement.setAttribute('data-theme', newTheme);
+      }
+    };
+    mediaQuery.addEventListener('change', handleChange);
+    return () => mediaQuery.removeEventListener('change', handleChange);
+  }, []);
+
+  const toggleTheme = () => {
+    const newTheme = theme === 'light' ? 'dark' : 'light';
+    setTheme(newTheme);
+    localStorage.setItem('theme-preference', newTheme);
+    document.documentElement.setAttribute('data-theme', newTheme);
+  };
 
   const navItems = [
     { label: 'Home', href: '/' },
@@ -27,49 +60,64 @@ const Navigation = () => {
             TWIS
           </Link>
 
-          {/* Desktop Navigation */}
-          <div className="hidden md:flex gap-8">
-            {navItems.map((item) => (
-              <Link
-                key={item.href}
-                href={item.href}
-                className="relative text-sm font-medium text-gray-700 dark:text-gray-300 transition-colors hover:text-black dark:hover:text-white"
-              >
-                {item.label}
-                {isActive(item.href) && (
-                  <motion.div
-                    layoutId="activeIndicator"
-                    className="absolute -bottom-1 left-0 right-0 h-px bg-black dark:bg-white"
-                    initial={false}
-                    transition={{ type: 'spring', stiffness: 380, damping: 30 }}
-                  />
-                )}
-              </Link>
-            ))}
-          </div>
+          <div className="flex items-center gap-4">
+            {/* Desktop Navigation */}
+            <div className="hidden md:flex gap-8">
+              {navItems.map((item) => (
+                <Link
+                  key={item.href}
+                  href={item.href}
+                  className="relative text-sm font-medium text-gray-700 dark:text-gray-300 transition-colors hover:text-black dark:hover:text-white"
+                >
+                  {item.label}
+                  {isActive(item.href) && (
+                    <motion.div
+                      layoutId="activeIndicator"
+                      className="absolute -bottom-1 left-0 right-0 h-px bg-black dark:bg-white"
+                      initial={false}
+                      transition={{ type: 'spring', stiffness: 380, damping: 30 }}
+                    />
+                  )}
+                </Link>
+              ))}
+            </div>
 
-          {/* Mobile Menu Button */}
-          <button
-            className="md:hidden flex flex-col gap-1 w-5 h-4"
-            onClick={() => setIsOpen(!isOpen)}
-            aria-label="Toggle menu"
-          >
-            <motion.div
-              className="w-full h-px bg-black dark:bg-white origin-left"
-              animate={isOpen ? { rotate: 45, y: 7 } : { rotate: 0, y: 0 }}
-              transition={{ duration: 0.3 }}
-            />
-            <motion.div
-              className="w-full h-px bg-black dark:bg-white"
-              animate={isOpen ? { opacity: 0 } : { opacity: 1 }}
-              transition={{ duration: 0.3 }}
-            />
-            <motion.div
-              className="w-full h-px bg-black dark:bg-white origin-left"
-              animate={isOpen ? { rotate: -45, y: -7 } : { rotate: 0, y: 0 }}
-              transition={{ duration: 0.3 }}
-            />
-          </button>
+            {/* Theme Toggle */}
+            <button
+              onClick={toggleTheme}
+              className="p-2 rounded-full hover:bg-black/5 dark:hover:bg-white/10 transition-colors"
+              aria-label="Toggle theme"
+            >
+              {theme === 'dark' ? (
+                <Sun className="w-5 h-5 text-gray-700 dark:text-gray-300" />
+              ) : (
+                <Moon className="w-5 h-5 text-gray-700 dark:text-gray-300" />
+              )}
+            </button>
+
+            {/* Mobile Menu Button */}
+            <button
+              className="md:hidden flex flex-col gap-1 w-5 h-4"
+              onClick={() => setIsOpen(!isOpen)}
+              aria-label="Toggle menu"
+            >
+              <motion.div
+                className="w-full h-px bg-black dark:bg-white origin-left"
+                animate={isOpen ? { rotate: 45, y: 7 } : { rotate: 0, y: 0 }}
+                transition={{ duration: 0.3 }}
+              />
+              <motion.div
+                className="w-full h-px bg-black dark:bg-white"
+                animate={isOpen ? { opacity: 0 } : { opacity: 1 }}
+                transition={{ duration: 0.3 }}
+              />
+              <motion.div
+                className="w-full h-px bg-black dark:bg-white origin-left"
+                animate={isOpen ? { rotate: -45, y: -7 } : { rotate: 0, y: 0 }}
+                transition={{ duration: 0.3 }}
+              />
+            </button>
+          </div>
         </div>
 
         {/* Mobile Menu */}
