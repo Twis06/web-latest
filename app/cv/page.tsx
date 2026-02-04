@@ -37,11 +37,11 @@ const CV = () => {
             <div className="space-y-8">
               <div className="border-l-2 border-gray-300 dark:border-gray-700 pl-6">
                 <h3 className="text-xl font-light mb-1">Bachelor's Degree, Northwestern University</h3>
-                <p className="text-gray-600 dark:text-gray-400 text-sm mb-2">2025 - 2029</p>
+                {/* <p className="text-gray-600 dark:text-gray-400 text-sm mb-2">2025 - 2029</p> */}
               </div>
               <div className="border-l-2 border-gray-300 dark:border-gray-700 pl-6">
                 <h3 className="text-xl font-light mb-1">IBDP Candidate, Shanghai Pinghe School</h3>
-                <p className="text-gray-600 dark:text-gray-400 text-sm mb-2">2023 - 2025</p>
+                {/* <p className="text-gray-600 dark:text-gray-400 text-sm mb-2">2023 - 2025</p> */}
                 <p className="text-sm">Graduated on the Principal's List (top 5% of class)</p>
               </div>
             </div>
@@ -77,15 +77,15 @@ const CV = () => {
                   className="w-60 h-auto rounded flex-shrink-0"
                 />
               </div>
-                <div className="border-l-2 border-gray-300 dark:border-gray-700 pl-6 flex gap-6 items-start">
+              <div className="border-l-2 border-gray-300 dark:border-gray-700 pl-6 flex gap-6 items-start">
                 <div className="flex-1">
                   <h3 className="text-xl font-light mb-1">Engineer, <a href="https://www.hapte.org/" target="_blank" rel="noopener noreferrer" className="text-[#434E78] dark:text-[#7A84B8]">HaptE</a></h3>
                   <p className="text-gray-600 dark:text-gray-400 text-sm mb-4">September 2025 - Present</p>
                   <ul className="space-y-2 text-sm">
-                  <li>• Developed edge AI inference pipeline for warehouse automation using TensorFlow on Nvidia Jetson Orin Nano</li>
-                  <li>• Trained and optimized multi-modal recognition system (segmentation, OCR, QR/barcode detection) for real-time local processing</li>
-                  <li>• Built multi-edge device coordination system with AWS IoT Core for distributed warehouse pick-and-place operations</li>
-                  <li>• Achieved fully local inference without cloud dependency, enabling autonomous item tracking and error prevention from camera input alone</li>
+                    <li>• Developed edge AI inference pipeline for warehouse automation using TensorFlow on Nvidia Jetson Orin Nano</li>
+                    <li>• Trained and optimized multi-modal recognition system (segmentation, OCR, QR/barcode detection) for real-time local processing</li>
+                    <li>• Built multi-edge device coordination system with AWS IoT Core for distributed warehouse pick-and-place operations</li>
+                    <li>• Achieved fully local inference without cloud dependency, enabling autonomous item tracking and error prevention from camera input alone</li>
                   </ul>
                 </div>
                 <video
@@ -96,14 +96,14 @@ const CV = () => {
                   className="w-60 h-auto rounded flex-shrink-0"
                 />
               </div>
-                <div className="border-l-2 border-gray-300 dark:border-gray-700 pl-6 flex gap-6 items-start">
+              <div className="border-l-2 border-gray-300 dark:border-gray-700 pl-6 flex gap-6 items-start">
                 <div className="flex-1">
                   <h3 className="text-xl font-light mb-1">Research Intern, Machine Learning & Language Lab, Northwestern University</h3>
                   <p className="text-gray-600 dark:text-gray-400 text-sm mb-4">September 2025 - Present</p>
                   <ul className="space-y-2 text-sm">
-                  <li>• Researching spatial intelligence agents and helping PHD research projects in embodied AI</li>
-                  <li>• Developing comprehensive training playground for object manipulation using Genesis physics simulator</li>
-                  <li>• Designed automated system to import 3D objects, generate target/initial states, and produce optimal image-text sequences for standardized multi-modal training pipelines</li>
+                    <li>• Researching spatial intelligence agents and helping PHD research projects in embodied AI</li>
+                    <li>• Developing comprehensive training playground for object manipulation using Genesis physics simulator</li>
+                    <li>• Designed automated system to import 3D objects, generate target/initial states, and produce optimal image-text sequences for standardized multi-modal training pipelines</li>
                   </ul>
                 </div>
                 <video
@@ -113,7 +113,7 @@ const CV = () => {
                   muted
                   className="w-50 h-auto rounded flex-shrink-0"
                 />
-                </div>
+              </div>
               <div className="border-l-2 border-gray-300 dark:border-gray-700 pl-6">
                 <h3 className="text-xl font-light mb-1">Research Intern (Algorithm), Differential Robotics</h3>
                 <p className="text-gray-600 dark:text-gray-400 text-sm mb-4">June 2025 - August 2025</p>
