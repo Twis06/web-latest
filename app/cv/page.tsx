@@ -19,9 +19,8 @@ const CV = () => {
             <h1 className="text-5xl md:text-6xl font-light mb-2">Peiyang (Ben) Li</h1>
             <p className="text-gray-600 dark:text-gray-400 font-light text-lg">Student</p>
             <div className="flex gap-6 mt-4 text-sm">
-              <a href="mailto:lipy.5101@gmail.com" className="hover:underline">Email</a>
+              <a href="mailto:benli2029@u.northwestern.edu" className="hover:underline">Email</a>
               <a href="https://github.com/Twis06" target="_blank" rel="noopener noreferrer" className="hover:underline">GitHub</a>
-              {/* <a href="https://peiyangli104.cargo.site/" target="_blank" rel="noopener noreferrer" className="hover:underline">Portfolio</a> */}
             </div>
           </motion.div>
 
@@ -36,8 +35,8 @@ const CV = () => {
             <h2 className="text-3xl font-light mb-8">Education</h2>
             <div className="space-y-8">
               <div className="border-l-2 border-gray-300 dark:border-gray-700 pl-6">
-                <h3 className="text-xl font-light mb-1">Bachelor's Degree, Northwestern University</h3>
-                {/* <p className="text-gray-600 dark:text-gray-400 text-sm mb-2">2025 - 2029</p> */}
+                <h3 className="text-xl font-light mb-1">Bachelor of Science in Computer Science & Mechanical Engineering, Northwestern University</h3>
+                <p className="text-gray-600 dark:text-gray-400 text-sm mb-2">Evanston, IL</p>
               </div>
               <div className="border-l-2 border-gray-300 dark:border-gray-700 pl-6">
                 <h3 className="text-xl font-light mb-1">IBDP Candidate, Shanghai Pinghe School</h3>
@@ -62,11 +61,8 @@ const CV = () => {
                   <h3 className="text-xl font-light mb-1">Undergraduate Research Assistant, <a href="https://www.xenobot.group/" target="_blank" rel="noopener noreferrer" className="text-[#434E78] dark:text-[#7A84B8]">Xenobot Lab</a></h3>
                   <p className="text-gray-600 dark:text-gray-400 text-sm mb-4">October 2025 - Present</p>
                   <ul className="space-y-2 text-sm">
-                    <li>• Developed and implemented a UWB-based localization system using the DW1000 transceiver</li>
-                    <li>• Achieved accurate 3D positioning with a three-anchor, one-tag setup</li>
-                    <li>• Working on <a href="https://modularlegs.github.io/" target="_blank" rel="noopener noreferrer">modular robot</a> with PHD</li>
-                    <li>• Working on using RL methods to train in real life of a single motor ball with IMU data</li>
-                    {/* <li>• Optimized the communication protocol to enhance system efficiency and reliability</li> */}
+                    <li>• Engineered DW1000-based localization system with three-anchor triangulation, achieving cm-level positioning at 30 Hz update rate. Solved concurrent SPI bus contention with IMU through interrupt-driven mutex, replacing expensive OptiTrack with a $50 embedded solution.</li>
+                    <li>• Co-architected <a href="https://modularlegs.github.io/" target="_blank" rel="noopener noreferrer" className="text-[#434E78] dark:text-[#7A84B8]">modular robot</a> hardware and RL control with PhD researchers. Designed novel wheel-leg modules and trained locomotion policies (PPO) across diverse morphologies in IsaacLab. Developing wheel-leg hybrid modules for multi-modal locomotion.</li>
                   </ul>
                 </div>
                 <video
@@ -79,13 +75,12 @@ const CV = () => {
               </div>
               <div className="border-l-2 border-gray-300 dark:border-gray-700 pl-6 flex gap-6 items-start">
                 <div className="flex-1">
-                  <h3 className="text-xl font-light mb-1">Engineer, <a href="https://www.hapte.org/" target="_blank" rel="noopener noreferrer" className="text-[#434E78] dark:text-[#7A84B8]">HaptE</a></h3>
-                  <p className="text-gray-600 dark:text-gray-400 text-sm mb-4">September 2025 - Present</p>
+                  <h3 className="text-xl font-light mb-1">Robotics Engineer, <a href="https://www.hapte.org/" target="_blank" rel="noopener noreferrer" className="text-[#434E78] dark:text-[#7A84B8]">HaptE</a></h3>
+                  <p className="text-gray-600 dark:text-gray-400 text-sm mb-4">September 2025 - January 2026</p>
                   <ul className="space-y-2 text-sm">
-                    <li>• Developed edge AI inference pipeline for warehouse automation using TensorFlow on Nvidia Jetson Orin Nano</li>
-                    <li>• Trained and optimized multi-modal recognition system (segmentation, OCR, QR/barcode detection) for real-time local processing</li>
-                    <li>• Built multi-edge device coordination system with AWS IoT Core for distributed warehouse pick-and-place operations</li>
-                    <li>• Achieved fully local inference without cloud dependency, enabling autonomous item tracking and error prevention from camera input alone</li>
+                    <li>• Architected fully local inference pipeline on Nvidia Jetson with TensorFlow, achieving &lt;20ms per-frame latency with zero cloud dependency. Delivered as a paid monthly subscription service to warehouse clients.</li>
+                    <li>• Trained recognition system (YOLO detection, MobileViT super-resolution, OCR, QR/barcode) achieving 98%+ item accuracy on 2k-image custom dataset. Integrated LiDAR for 3D spatial awareness in cluttered environments.</li>
+                    <li>• Engineered multi-edge device orchestration with AWS IoT Core for distributed pick-and-place. Integrated LLM-based task planner for intelligent error prevention and autonomous operation.</li>
                   </ul>
                 </div>
                 <video
@@ -99,11 +94,10 @@ const CV = () => {
               <div className="border-l-2 border-gray-300 dark:border-gray-700 pl-6 flex gap-6 items-start">
                 <div className="flex-1">
                   <h3 className="text-xl font-light mb-1">Research Intern, Machine Learning & Language Lab, Northwestern University</h3>
-                  <p className="text-gray-600 dark:text-gray-400 text-sm mb-4">September 2025 - Present</p>
+                  <p className="text-gray-600 dark:text-gray-400 text-sm mb-4">September 2025</p>
                   <ul className="space-y-2 text-sm">
-                    <li>• Researching spatial intelligence agents and helping PHD research projects in embodied AI</li>
-                    <li>• Developing comprehensive training playground for object manipulation using Genesis physics simulator</li>
-                    <li>• Designed automated system to import 3D objects, generate target/initial states, and produce optimal image-text sequences for standardized multi-modal training pipelines</li>
+                    <li>• Developed object manipulation training environment in Genesis physics simulator with procedural 3D asset generation, automated state initialization, and domain-randomized scene composition for PhD research.</li>
+                    <li>• Designed end-to-end pipeline generating curated image-text pairs from simulated manipulation scenes, producing 10k+ training samples for vision-language model fine-tuning.</li>
                   </ul>
                 </div>
                 <video
@@ -116,11 +110,10 @@ const CV = () => {
               </div>
               <div className="border-l-2 border-gray-300 dark:border-gray-700 pl-6">
                 <h3 className="text-xl font-light mb-1">Research Intern (Algorithm), Differential Robotics</h3>
-                <p className="text-gray-600 dark:text-gray-400 text-sm mb-4">June 2025 - August 2025</p>
-                <p className="text-sm mb-3">Worked on two autonomous drone projects:</p>
+                <p className="text-gray-600 dark:text-gray-400 text-sm mb-4">May 2025 - August 2025</p>
                 <ul className="space-y-2 text-sm">
-                  <li>• Optimized sparse reward RL for obstacle avoidance navigation</li>
-                  <li>• Implemented real-time computer vision for high-speed stunt maneuvers, achieved 90% success rate in extreme conditions using MobileNetV3 architecture</li>
+                  <li>• Designed sparse-to-dense reward curriculum for obstacle avoidance, improving training convergence 3× over baseline PPO in cluttered environments.</li>
+                  <li>• Deployed real-time end-to-end vision model for high-speed drone maneuvers through near-vertical frames at 4+ m/s. Achieved 95% success rate with MobileNetV3 optimized via TensorRT (&lt;5ms latency). Successfully transferred to physical hardware.</li>
                 </ul>
               </div>
             </div>
@@ -136,17 +129,16 @@ const CV = () => {
           >
             <h2 className="text-3xl font-light mb-8">Projects</h2>
             <div className="space-y-12">
-              {/* End-to-End High-Speed Drone Frame Navigation System */}
+              {/* Completed Projects */}
               <div>
-                <h3 className="text-xl font-light mb-1">End-to-End High-Speed Drone Frame Navigation System</h3>
+                <h3 className="text-xl font-light mb-1">End-to-End High-Speed Drone Navigation System</h3>
                 <p className="text-gray-600 dark:text-gray-400 text-sm mb-4">2025</p>
                 <a href="https://framevisualize.vercel.app/" target="_blank" rel="noopener noreferrer" className="text-sm hover:underline mb-4 inline-block">
                   Visualized Results →
                 </a>
                 <ul className="space-y-2 text-sm mb-6">
-                  <li>• Developed an end-to-end vision navigation system enabling drones to traverse 85° tilted frames at 4–6 m/s with near-100% success.</li>
-                  <li>• Optimized MobileNetV3 + DeepLabV3+ backbone on Jetson Xavier NX via TensorRT, achieving ~3ms inference latency and &gt;60Hz control frequency.</li>
-                  <li>• Trained RL control policies with shaped rewards and distillation-aware regularization to ensure stable high-speed maneuvering.</li>
+                  <li>• Developed end-to-end vision-to-control system enabling drones to traverse 85° tilted frames at 4–6 m/s with 95% success rate.</li>
+                  <li>• Optimized MobileNetV3 + DeepLabV3+ on Jetson Xavier NX via TensorRT, achieving ~3ms inference and &gt;60Hz closed-loop control.</li>
                 </ul>
                 <div className="grid grid-cols-2 gap-4 mb-8">
                   <img src="/cv/takeoff-1-80deg.gif" alt="Drone takeoff 1" className="w-full h-auto rounded" />
@@ -156,7 +148,6 @@ const CV = () => {
                 </div>
               </div>
 
-              {/* End-to-End RL Drone Navigation System */}
               <div>
                 <h3 className="text-xl font-light mb-1">End-to-End RL Drone Navigation System</h3>
                 <p className="text-gray-600 dark:text-gray-400 text-sm mb-4">2025</p>
@@ -164,6 +155,43 @@ const CV = () => {
                   <li>• Built an end-to-end navigation pipeline in IsaacLab using deep reinforcement learning (PPO), mapping high-dimensional sensor inputs (depth images + proprioceptive states) directly to low-level motor actions.</li>
                   <li>• Implemented curriculum learning & domain randomization (obstacle density, dynamic disturbances, sensor noise) to improve generalization and enable sim-to-real transfer.</li>
                   <li>• Designed hybrid reward shaping: integrated Dijkstra-based path priors, directional distance rewards, ESDF collision penalties, and smoothness constraints to stabilize long-horizon flight.</li>
+                </ul>
+              </div>
+
+              <div>
+                <h3 className="text-xl font-light mb-1">Low-Cost UWB Localization for Rollbot</h3>
+                <p className="text-gray-600 dark:text-gray-400 text-sm mb-4">2025–2026</p>
+                <ul className="space-y-2 text-sm">
+                  <li>• Engineered DW1000 localization with concurrent SPI bus sharing (UWB + IMU) via interrupt-driven hardware mutex for stable multi-device communication.</li>
+                  <li>• Rewrote TWR ranging protocol, increasing update rate to 30 Hz and improving accuracy via Kalman-filtered multi-anchor triangulation.</li>
+                  <li>• Delivered cm-level autonomous navigation for Rollbot (single-actuator spherical robot), replacing $10k+ OptiTrack with $50 embedded hardware.</li>
+                </ul>
+              </div>
+
+              {/* Ongoing Projects */}
+              <div>
+                <h3 className="text-xl font-light mb-1">Wheel-Legged Modular Robot with Evolutionary Design <span className="text-xs text-gray-500 dark:text-gray-400 font-normal">(Ongoing)</span></h3>
+                <p className="text-gray-600 dark:text-gray-400 text-sm mb-4"></p>
+                <ul className="space-y-2 text-sm">
+                  <li>• Designing wheel-leg hybrid modules enabling multi-modal locomotion (walking, rolling, climbing) with evolutionary morphology optimization.</li>
+                  <li>• Training RL control policies (PPO-LSTM) in IsaacLab for computer-generated morphologies; conducting sim-to-real transfer to physical robot.</li>
+                </ul>
+              </div>
+
+              <div>
+                <h3 className="text-xl font-light mb-1">Multi-Drone VLA Coordination System <span className="text-xs text-gray-500 dark:text-gray-400 font-normal">(Ongoing)</span></h3>
+                <p className="text-gray-600 dark:text-gray-400 text-sm mb-4"></p>
+                <ul className="space-y-2 text-sm">
+                  <li>• Designing hierarchical architecture: VLA model for high-level mission planning, with learned low-level control policies for agile flight.</li>
+                  <li>• Building multi-agent simulation for autonomous delivery, collaborative mapping, and object search tasks.</li>
+                </ul>
+              </div>
+
+              <div>
+                <h3 className="text-xl font-light mb-1">Drum Generation from Vocal Beatbox via Flow Matching <span className="text-xs text-gray-500 dark:text-gray-400 font-normal">(Ongoing)</span></h3>
+                <p className="text-gray-600 dark:text-gray-400 text-sm mb-4"></p>
+                <ul className="space-y-2 text-sm">
+                  <li>• Developing data pipeline mapping drum MIDI datasets to vocal beatbox audio for paired training corpus generation.</li>
                 </ul>
               </div>
 
@@ -189,27 +217,27 @@ const CV = () => {
             className="mb-16"
           >
             <h2 className="text-3xl font-light mb-8">Skills</h2>
-            <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3">
+            <div className="space-y-6">
               {[
-                'LaTeX',
-                'Python',
-                'Data Analysis',
-                'Machine Learning',
-                'Reinforcement Learning',
-                'Computer Vision',
-                'Web Development',
-                'Drone Operation',
-                'Photography',
-                'Video Editing',
-                '3D Modeling',
-              ].map((skill, index) => (
-                <motion.div
-                  key={index}
-                  className="px-4 py-2 bg-gray-100 dark:bg-gray-900 text-sm font-light rounded"
-                  whileHover={{ scale: 1.05 }}
-                >
-                  {skill}
-                </motion.div>
+                { category: 'Programming', items: ['Python', 'C/C++', 'MATLAB', 'LaTeX', 'JavaScript'] },
+                { category: 'Robotics & AI', items: ['Reinforcement Learning (PPO, SAC)', 'Computer Vision', 'Motion Planning', 'Sim-to-Real Transfer'] },
+                { category: 'Tools & Frameworks', items: ['ROS2', 'IsaacLab', 'PyTorch', 'TensorFlow', 'TensorRT', 'OpenCV', 'AWS IoT'] },
+                { category: 'Hardware', items: ['Nvidia Jetson', 'ESP32', 'UWB', 'IMU', 'LiDAR', 'Drone Systems', '3D Printing/CAD'] },
+              ].map((group, groupIndex) => (
+                <div key={groupIndex}>
+                  <h3 className="text-lg font-light mb-3">{group.category}</h3>
+                  <div className="flex flex-wrap gap-2">
+                    {group.items.map((skill, index) => (
+                      <motion.div
+                        key={index}
+                        className="px-4 py-2 bg-gray-100 dark:bg-gray-900 text-sm font-light rounded"
+                        whileHover={{ scale: 1.05 }}
+                      >
+                        {skill}
+                      </motion.div>
+                    ))}
+                  </div>
+                </div>
               ))}
             </div>
           </motion.section>
@@ -255,14 +283,14 @@ const CV = () => {
             <p className="text-gray-700 dark:text-gray-300">
               Photography, Filmmaking, Travel, Soccer, Badminton. View my{' '}
               <a
-                href="https://peiyangli104.cargo.site/"
+                href="https://www.twis.onl/photography"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="hover:underline"
               >
                 photography portfolio
               </a>
-              {' '}for creative work samples.
+              .
             </p>
           </motion.section>
         </div>
