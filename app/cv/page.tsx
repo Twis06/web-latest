@@ -61,8 +61,8 @@ const CV = () => {
                   <h3 className="text-xl font-light mb-1">Undergraduate Research Assistant, <a href="https://www.xenobot.group/" target="_blank" rel="noopener noreferrer" className="text-[#434E78] dark:text-[#7A84B8]">Xenobot Lab</a></h3>
                   <p className="text-gray-600 dark:text-gray-400 text-sm mb-4">October 2025 - Present</p>
                   <ul className="space-y-2 text-sm">
-                    <li>• Engineered DW1000-based localization system with three-anchor triangulation, achieving cm-level positioning at 30 Hz update rate. Solved concurrent SPI bus contention with IMU through interrupt-driven mutex, replacing expensive OptiTrack with a $50 embedded solution.</li>
-                    <li>• Co-architected <a href="https://modularlegs.github.io/" target="_blank" rel="noopener noreferrer" className="text-[#434E78] dark:text-[#7A84B8]">modular robot</a> hardware and RL control with PhD researchers. Designed novel wheel-leg modules and trained locomotion policies (PPO) across diverse morphologies in IsaacLab. Developing wheel-leg hybrid modules for multi-modal locomotion.</li>
+                    <li>• Built a DW1000-based localization system with three-anchor triangulation, achieving cm-level positioning at 30 Hz update rate. Solved concurrent SPI bus contention with IMU through interrupt-driven mutex, providing a low-cost alternative to expensive motion capture systems.</li>
+                    <li>• Co-developed <a href="https://modularlegs.github.io/" target="_blank" rel="noopener noreferrer" className="text-[#434E78] dark:text-[#7A84B8]">modular robot</a> hardware and RL control with PhD researchers. Designed novel wheel-leg modules and trained locomotion policies (PPO) across diverse morphologies in MuJoCo. Developing wheel-leg hybrid modules for multi-modal locomotion.</li>
                   </ul>
                 </div>
                 <video
@@ -78,9 +78,9 @@ const CV = () => {
                   <h3 className="text-xl font-light mb-1">Robotics Engineer, <a href="https://www.hapte.org/" target="_blank" rel="noopener noreferrer" className="text-[#434E78] dark:text-[#7A84B8]">HaptE</a></h3>
                   <p className="text-gray-600 dark:text-gray-400 text-sm mb-4">September 2025 - January 2026</p>
                   <ul className="space-y-2 text-sm">
-                    <li>• Architected fully local inference pipeline on Nvidia Jetson with TensorFlow, achieving &lt;20ms per-frame latency with zero cloud dependency. Delivered as a paid monthly subscription service to warehouse clients.</li>
+                    <li>• Built fully local inference pipeline on Nvidia Jetson with TensorFlow, achieving &lt;20ms per-frame latency with zero cloud dependency. Delivered as a paid monthly subscription service to warehouse clients.</li>
                     <li>• Trained recognition system (YOLO detection, MobileViT super-resolution, OCR, QR/barcode) achieving 98%+ item accuracy on 2k-image custom dataset. Integrated LiDAR for 3D spatial awareness in cluttered environments.</li>
-                    <li>• Engineered multi-edge device orchestration with AWS IoT Core for distributed pick-and-place. Integrated LLM-based task planner for intelligent error prevention and autonomous operation.</li>
+                    <li>• Developed multi-edge device orchestration with AWS IoT Core for distributed pick-and-place. Integrated LLM-based task planner for intelligent error prevention and autonomous operation.</li>
                   </ul>
                 </div>
                 <video
@@ -112,7 +112,7 @@ const CV = () => {
                 <h3 className="text-xl font-light mb-1">Research Intern (Algorithm), Differential Robotics</h3>
                 <p className="text-gray-600 dark:text-gray-400 text-sm mb-4">May 2025 - August 2025</p>
                 <ul className="space-y-2 text-sm">
-                  <li>• Designed sparse-to-dense reward curriculum for obstacle avoidance, improving training convergence 3× over baseline PPO in cluttered environments.</li>
+                  <li>• Designed sparse-to-dense reward curriculum for obstacle avoidance, improving training convergence 3× over baseline PPO in cluttered environments in IsaacLab.</li>
                   <li>• Deployed real-time end-to-end vision model for high-speed drone maneuvers through near-vertical frames at 4+ m/s. Achieved 95% success rate with MobileNetV3 optimized via TensorRT (&lt;5ms latency). Successfully transferred to physical hardware.</li>
                 </ul>
               </div>
@@ -159,12 +159,12 @@ const CV = () => {
               </div>
 
               <div>
-                <h3 className="text-xl font-light mb-1">Low-Cost UWB Localization for Rollbot</h3>
+                <h3 className="text-xl font-light mb-1">Low-Cost UWB Localization for <a href="https://arxiv.org/abs/2404.05120" target="_blank" rel="noopener noreferrer" className="text-[#434E78] dark:text-[#7A84B8]">Rollbot</a></h3>
                 <p className="text-gray-600 dark:text-gray-400 text-sm mb-4">2025–2026</p>
                 <ul className="space-y-2 text-sm">
-                  <li>• Engineered DW1000 localization with concurrent SPI bus sharing (UWB + IMU) via interrupt-driven hardware mutex for stable multi-device communication.</li>
+                  <li>• Built DW1000 localization with concurrent SPI bus sharing (UWB + IMU) via interrupt-driven hardware mutex for stable multi-device communication.</li>
                   <li>• Rewrote TWR ranging protocol, increasing update rate to 30 Hz and improving accuracy via Kalman-filtered multi-anchor triangulation.</li>
-                  <li>• Delivered cm-level autonomous navigation for Rollbot (single-actuator spherical robot), replacing $10k+ OptiTrack with $50 embedded hardware.</li>
+                  <li>• Delivered cm-level autonomous navigation for <a href="https://arxiv.org/abs/2404.05120" target="_blank" rel="noopener noreferrer" className="text-[#434E78] dark:text-[#7A84B8]">Rollbot</a> (single-actuator spherical robot), offering a $50 embedded alternative to $10k+ OptiTrack systems.</li>
                 </ul>
               </div>
 
@@ -174,7 +174,7 @@ const CV = () => {
                 <p className="text-gray-600 dark:text-gray-400 text-sm mb-4"></p>
                 <ul className="space-y-2 text-sm">
                   <li>• Designing wheel-leg hybrid modules enabling multi-modal locomotion (walking, rolling, climbing) with evolutionary morphology optimization.</li>
-                  <li>• Training RL control policies (PPO-LSTM) in IsaacLab for computer-generated morphologies; conducting sim-to-real transfer to physical robot.</li>
+                  <li>• Training RL control policies (PPO via SB3) in MuJoCo for computer-generated morphologies; conducting sim-to-real transfer to physical robot.</li>
                 </ul>
               </div>
 
@@ -183,17 +183,18 @@ const CV = () => {
                 <p className="text-gray-600 dark:text-gray-400 text-sm mb-4"></p>
                 <ul className="space-y-2 text-sm">
                   <li>• Designing hierarchical architecture: VLA model for high-level mission planning, with learned low-level control policies for agile flight.</li>
+                  <li>• Acheived stable flight with payloads in cluttered environments in IsaacSim.</li>
                   <li>• Building multi-agent simulation for autonomous delivery, collaborative mapping, and object search tasks.</li>
                 </ul>
               </div>
 
-              <div>
+              {/* <div>
                 <h3 className="text-xl font-light mb-1">Drum Generation from Vocal Beatbox via Flow Matching <span className="text-xs text-gray-500 dark:text-gray-400 font-normal">(Ongoing)</span></h3>
                 <p className="text-gray-600 dark:text-gray-400 text-sm mb-4"></p>
                 <ul className="space-y-2 text-sm">
                   <li>• Developing data pipeline mapping drum MIDI datasets to vocal beatbox audio for paired training corpus generation.</li>
                 </ul>
-              </div>
+              </div> */}
 
               {/* Modeling Soccer Ball Trajectory */}
               <div>
@@ -219,9 +220,9 @@ const CV = () => {
             <h2 className="text-3xl font-light mb-8">Skills</h2>
             <div className="space-y-6">
               {[
-                { category: 'Programming', items: ['Python', 'C/C++', 'MATLAB', 'LaTeX', 'JavaScript'] },
+                { category: 'Programming', items: ['Python', 'C/C++', 'MATLAB', 'LaTeX'] },
                 { category: 'Robotics & AI', items: ['Reinforcement Learning (PPO, SAC)', 'Computer Vision', 'Motion Planning', 'Sim-to-Real Transfer'] },
-                { category: 'Tools & Frameworks', items: ['ROS2', 'IsaacLab', 'PyTorch', 'TensorFlow', 'TensorRT', 'OpenCV', 'AWS IoT'] },
+                { category: 'Tools & Frameworks', items: ['IsaacLab', 'PyTorch', 'TensorFlow', 'TensorRT', 'OpenCV', 'AWS IoT', 'ROS2'] },
                 { category: 'Hardware', items: ['Nvidia Jetson', 'ESP32', 'UWB', 'IMU', 'LiDAR', 'Drone Systems', '3D Printing/CAD'] },
               ].map((group, groupIndex) => (
                 <div key={groupIndex}>
