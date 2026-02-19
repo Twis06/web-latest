@@ -66,8 +66,8 @@ const CV = () => {
                   </ul>
                 </div>
                 <iframe
-                  width="240"
-                  height="135"
+                  width="380"
+                  height="210"
                   src="https://www.youtube.com/embed/8VKSx1zSg7Q?autoplay=1&mute=1&loop=1&playlist=8VKSx1zSg7Q"
                   title="Reconfigurable legged machines in the wild"
                   frameBorder="0"
