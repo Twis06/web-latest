@@ -225,9 +225,9 @@ const CV = () => {
             <div className="space-y-6">
               {[
                 { category: 'Programming', items: ['Python', 'C/C++', 'MATLAB', 'LaTeX'] },
-                { category: 'Robotics & AI', items: ['Reinforcement Learning (PPO, SAC)', 'Computer Vision', 'Motion Planning', 'Sim-to-Real Transfer'] },
-                { category: 'Tools & Frameworks', items: ['IsaacLab', 'PyTorch', 'TensorFlow', 'TensorRT', 'OpenCV', 'AWS IoT', 'ROS2'] },
-                { category: 'Hardware', items: ['Nvidia Jetson', 'ESP32', 'UWB', 'IMU', 'LiDAR', 'Drone Systems', '3D Printing/CAD'] },
+                { category: 'Robotics & AI', items: ['Reinforcement Learning', 'Computer Vision', 'Motion Planning', 'Sim-to-Real Transfer'] },
+                { category: 'Tools & Frameworks', items: ['IsaacLab', 'PyTorch', 'TensorRT', 'OpenCV', 'AWS IoT'] },
+                { category: 'Hardware', items: ['Nvidia Jetson', 'ESP32', 'UWB', 'IMU', 'Drone Systems', '3D Printing/CAD'] },
               ].map((group, groupIndex) => (
                 <div key={groupIndex}>
                   <h3 className="text-lg font-light mb-3">{group.category}</h3>
