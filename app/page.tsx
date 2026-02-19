@@ -23,18 +23,18 @@ const Home = () => {
     // Get all text layers and cache their positions
     const textLayers = mainRef.current.querySelectorAll('[data-layer]');
     const trackImages = mainRef.current.querySelectorAll('[data-track-image]');
-    
+
     // Pre-calculate all layer positions and create cache
     const layerTracks = Array.from(textLayers).map((layer, index) => {
       const layerNumber = parseInt((layer as HTMLElement).dataset.layer || '1');
       const trackImage = trackImages[layerNumber - 1] as HTMLElement;
-      
+
       if (!trackImage) return null;
-      
+
       const layerTop = (layer as HTMLElement).offsetTop;
       const layerHeight = (layer as HTMLElement).offsetHeight;
       const viewportHeight = window.innerHeight;
-      
+
       return {
         layer: layer as HTMLElement,
         trackImage: trackImage,
@@ -54,10 +54,10 @@ const Home = () => {
         // Calculate progress
         let progress = (scroll - layerStartScroll) / layerDuration;
         progress = Math.max(0, Math.min(1, progress));
-        
+
         let topCrop = 0;
         let bottomCrop = 0;
-        
+
         if (progress < 0.5) {
           topCrop = (1 - progress * 2) * 100;
           bottomCrop = 0;
@@ -68,7 +68,7 @@ const Home = () => {
           topCrop = 0;
           bottomCrop = 100;
         }
-        
+
         // Use transform instead of clip-path for better performance, fallback to clip-path
         trackImage.style.clipPath = `inset(${topCrop}% 0 ${bottomCrop}% 0)`;
       });
@@ -82,7 +82,7 @@ const Home = () => {
       lenis.raf(Date.now());
       animationId = requestAnimationFrame(animate);
     };
-    
+
     animationId = requestAnimationFrame(animate);
 
     return () => {
@@ -105,13 +105,13 @@ const Home = () => {
       <section className="h-screen flex items-center justify-center px-4 relative z-40 bg-black">
         <div className="text-center space-y-4">
           <h1 className="text-6xl md:text-8xl font-light tracking-tight opacity-0" data-hero-text="name">
-            Ben Li 
+            Ben Li
           </h1>
           <p className="text-lg md:text-2xl font-light text-gray-400 opacity-0" data-hero-text="title">
             Developer & <a href="/photography">Photographer</a>
           </p>
           <div className="text-sm text-gray-500 opacity-0 pt-8" data-hero-text="info">
-            2025
+            2026
           </div>
         </div>
       </section>
@@ -119,30 +119,30 @@ const Home = () => {
       {/* Fixed Image Container - All images here, track drives clip-path */}
       <div className="fixed-images-container">
         <div data-track-image="1" className="track-image">
-          <img 
-            src="/photography/DSC04715-min.jpg" 
-            alt="Project Alpha" 
+          <img
+            src="/photography/DSC04715-min.jpg"
+            alt="Project Alpha"
             className="w-full h-full object-cover"
           />
         </div>
         <div data-track-image="2" className="track-image">
-          <img 
-            src="/photography/DSC04760-min.jpg" 
-            alt="Project Beta" 
+          <img
+            src="/photography/DSC04760-min.jpg"
+            alt="Project Beta"
             className="w-full h-full object-cover"
           />
         </div>
         <div data-track-image="3" className="track-image">
-          <img 
-            src="/photography/DSC04767-min.jpg" 
-            alt="Project Gamma" 
+          <img
+            src="/photography/DSC04767-min.jpg"
+            alt="Project Gamma"
             className="w-full h-full object-cover"
           />
         </div>
       </div>
 
       {/* Text Layers - These scroll and trigger image reveals */}
-      
+
       {/* Layer 1: Project Alpha */}
       <section className="text-layer h-screen flex items-center justify-center relative z-20 pt-20" data-layer="1">
         <h2 className="text-6xl md:text-8xl font-light text-white text-center"><a href="/photography">2025</a></h2>
@@ -162,9 +162,9 @@ const Home = () => {
       <section className="bg-black flex items-center justify-center relative z-10 py-100">
         <div className="text-center space-y-8 max-w-3xl px-4 h-full flex flex-col justify-center">
           <h2 className="text-5xl md:text-7xl font-light">Get in touch</h2>
-            <p className="text-gray-400 text-lg md:text-xl leading-relaxed">
+          <p className="text-gray-400 text-lg md:text-xl leading-relaxed">
             If you have a project in mind, feel free to reach out. I'm always eager to learn and explore new ideas.
-            </p>
+          </p>
           <div className="space-y-4 pt-8">
             <p className="text-gray-500"><a href="mailto:twislpy01@icloud.com">Email</a></p>
             <p className="text-gray-500"><a href="https://github.com/Twis06">GitHub</a></p>

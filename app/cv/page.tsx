@@ -65,12 +65,16 @@ const CV = () => {
                     <li>• Co-developed <a href="https://modularlegs.github.io/" target="_blank" rel="noopener noreferrer" className="text-[#434E78] dark:text-[#7A84B8]">modular robot</a> hardware and RL control with PhD researchers. Designed novel wheel-leg modules and trained locomotion policies (PPO) across diverse morphologies in MuJoCo. Developing wheel-leg hybrid modules for multi-modal locomotion.</li>
                   </ul>
                 </div>
-                <video
-                  src="/cv/uwb_simulation.mp4"
-                  autoPlay
-                  loop
-                  muted
-                  className="w-60 h-auto rounded flex-shrink-0"
+                <iframe
+                  width="240"
+                  height="135"
+                  src="https://www.youtube.com/embed/8VKSx1zSg7Q?autoplay=1&mute=1&loop=1&playlist=8VKSx1zSg7Q"
+                  title="Reconfigurable legged machines in the wild"
+                  frameBorder="0"
+                  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                  referrerPolicy="strict-origin-when-cross-origin"
+                  allowFullScreen
+                  className="rounded flex-shrink-0"
                 />
               </div>
               <div className="border-l-2 border-gray-300 dark:border-gray-700 pl-6 flex gap-6 items-start">
