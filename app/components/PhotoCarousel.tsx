@@ -3,11 +3,7 @@
 import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 
-interface PhotoCarouselProps {
-  images?: string[];
-}
-
-const PhotoCarousel = ({ images = [] }: PhotoCarouselProps) => {
+const PhotoCarousel = () => {
   const [currentIndex, setCurrentIndex] = useState(0);
   const [direction, setDirection] = useState(0);
 

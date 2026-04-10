@@ -24,6 +24,7 @@
 
 # misc
 /video_processor
+/public/photography-thumbs/
 # misc
 .DS_Store
 *.pem

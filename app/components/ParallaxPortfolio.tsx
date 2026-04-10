@@ -1,7 +1,7 @@
 'use client';
 
-import { useState, useRef, useEffect } from 'react';
-import { motion, useScroll, useTransform } from 'framer-motion';
+import { useRef } from 'react';
+import { motion, useScroll, useTransform, type MotionValue } from 'framer-motion';
 
 interface PortfolioItem {
   id: number;
@@ -24,8 +24,8 @@ const ParallaxPortfolio = () => {
 
   return (
     <div ref={containerRef} className="relative bg-black">
-      {portfolioItems.map((item, index) => (
-        <ParallaxSection key={item.id} item={item} index={index} scrollProgress={scrollYProgress} />
+      {portfolioItems.map((item) => (
+        <ParallaxSection key={item.id} item={item} scrollProgress={scrollYProgress} />
       ))}
     </div>
   );
@@ -33,24 +33,17 @@ const ParallaxPortfolio = () => {
 
 const ParallaxSection = ({
   item,
-  index,
   scrollProgress,
 }: {
   item: PortfolioItem;
-  index: number;
-  scrollProgress: any;
+  scrollProgress: MotionValue<number>;
 }) => {
   const sectionRef = useRef<HTMLDivElement>(null);
-  const [sectionProgress, setSectionProgress] = useState(0);
 
   const { scrollYProgress: localScrollProgress } = useScroll({
     target: sectionRef,
     offset: ['start center', 'end center'],
   });
-
-  useEffect(() => {
-    return localScrollProgress.onChange((v) => setSectionProgress(v));
-  }, [localScrollProgress]);
 
   // Image moves slower, text moves faster (parallax)
   const imageY = useTransform(scrollProgress, [0, 1], [0, 100]);

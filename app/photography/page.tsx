@@ -1,52 +1,119 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import Image from 'next/image';
 import { motion } from 'framer-motion';
+import { PHOTO_CATEGORIES } from '@/app/lib/photos';
 
 // Categories - add your photos to /public/photography/[category]/
-const CATEGORIES = ['2025', '2024', '2023', 'travel', 'food'];
+const INITIAL_BATCH_SIZE = 20;
+const BATCH_SIZE = 16;
 
 interface Photo {
-  src: string;
+  previewSrc: string;
+  fullSrc: string;
   category: string;
   filename: string;
 }
+
+const shuffleArray = (array: Photo[]) => {
+  const shuffled = [...array];
+  for (let i = shuffled.length - 1; i > 0; i -= 1) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
+  }
+  return shuffled;
+};
+
+const getShuffledByCategory = (allPhotos: Photo[], category: string) => {
+  const basePhotos = category === 'all'
+    ? allPhotos
+    : allPhotos.filter((photo) => photo.category === category);
+
+  return shuffleArray(basePhotos);
+};
 
 const Photography = () => {
   const [selectedCategory, setSelectedCategory] = useState<string>('all');
   const [lightboxImage, setLightboxImage] = useState<string | null>(null);
   const [photos, setPhotos] = useState<Photo[]>([]);
+  const [filteredPhotos, setFilteredPhotos] = useState<Photo[]>([]);
+  const [visibleCount, setVisibleCount] = useState(INITIAL_BATCH_SIZE);
   const [loading, setLoading] = useState(true);
+  const loadMoreRef = useRef<HTMLDivElement | null>(null);
+  const selectedCategoryRef = useRef<string>('all');
+  const prefetchedFullRes = useRef<Set<string>>(new Set());
 
   useEffect(() => {
+    const controller = new AbortController();
+
     // Fetch photos from API route
-    fetch('/api/photos')
+    fetch('/api/photos', { signal: controller.signal })
       .then(res => res.json())
       .then(data => {
-        setPhotos(data.photos || []);
+        const nextPhotos = data.photos || [];
+        setPhotos(nextPhotos);
+        setFilteredPhotos(getShuffledByCategory(nextPhotos, selectedCategoryRef.current));
+        setVisibleCount(INITIAL_BATCH_SIZE);
         setLoading(false);
       })
       .catch(err => {
+        if (err.name === 'AbortError') return;
         console.error('Failed to load photos:', err);
         setLoading(false);
       });
+
+    return () => controller.abort();
   }, []);
 
-  // Shuffle function for randomizing photos
-  const shuffleArray = (array: Photo[]) => {
-    const shuffled = [...array];
-    for (let i = shuffled.length - 1; i > 0; i--) {
-      const j = Math.floor(Math.random() * (i + 1));
-      [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
-    }
-    return shuffled;
+  useEffect(() => {
+    if (!lightboxImage) return;
+
+    const onKeyDown = (event: KeyboardEvent) => {
+      if (event.key === 'Escape') {
+        setLightboxImage(null);
+      }
+    };
+
+    document.body.style.overflow = 'hidden';
+    window.addEventListener('keydown', onKeyDown);
+
+    return () => {
+      document.body.style.overflow = '';
+      window.removeEventListener('keydown', onKeyDown);
+    };
+  }, [lightboxImage]);
+
+  const handleCategoryChange = (category: string) => {
+    selectedCategoryRef.current = category;
+    setSelectedCategory(category);
+    setFilteredPhotos(getShuffledByCategory(photos, category));
+    setVisibleCount(INITIAL_BATCH_SIZE);
   };
 
-  // Filter photos by category and shuffle
-  const filteredPhotos = selectedCategory === 'all' 
-    ? shuffleArray(photos)
-    : shuffleArray(photos.filter(p => p.category === selectedCategory));
+  useEffect(() => {
+    const target = loadMoreRef.current;
+    if (!target || loading || visibleCount >= filteredPhotos.length) return;
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        if (!entries[0]?.isIntersecting) return;
+        setVisibleCount((prev) => Math.min(prev + BATCH_SIZE, filteredPhotos.length));
+      },
+      { rootMargin: '600px 0px' }
+    );
+
+    observer.observe(target);
+    return () => observer.disconnect();
+  }, [filteredPhotos.length, loading, visibleCount]);
+
+  const visiblePhotos = filteredPhotos.slice(0, visibleCount);
+  const prefetchFullRes = (src: string) => {
+    if (prefetchedFullRes.current.has(src)) return;
+    const img = new window.Image();
+    img.src = src;
+    prefetchedFullRes.current.add(src);
+  };
 
   return (
     <div className="min-h-screen bg-white dark:bg-black px-4 sm:px-6 lg:px-8 py-20">
@@ -72,7 +139,7 @@ const Photography = () => {
           className="mb-12 flex flex-wrap gap-3"
         >
           <button
-            onClick={() => setSelectedCategory('all')}
+            onClick={() => handleCategoryChange('all')}
             className={`px-6 py-2 rounded-full text-sm font-light transition-all ${
               selectedCategory === 'all'
                 ? 'bg-black dark:bg-white text-white dark:text-black'
@@ -81,10 +148,10 @@ const Photography = () => {
           >
             All
           </button>
-          {CATEGORIES.map((category) => (
+          {PHOTO_CATEGORIES.map((category) => (
             <button
               key={category}
-              onClick={() => setSelectedCategory(category)}
+              onClick={() => handleCategoryChange(category)}
               className={`px-6 py-2 rounded-full text-sm font-light transition-all capitalize ${
                 selectedCategory === category
                   ? 'bg-black dark:bg-white text-white dark:text-black'
@@ -118,29 +185,34 @@ const Photography = () => {
             transition={{ delay: 0.4 }}
             className="columns-1 sm:columns-2 lg:columns-3 xl:columns-4 gap-4"
           >
-            {filteredPhotos.map((photo, index) => (
-              <motion.div
-                key={photo.src}
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.5, delay: index * 0.05 }}
-                viewport={{ once: true }}
+            {visiblePhotos.map((photo, index) => (
+              <div
+                key={photo.fullSrc}
                 className="break-inside-avoid mb-4 cursor-pointer group"
-                onClick={() => setLightboxImage(photo.src)}
+                style={{ contentVisibility: 'auto', containIntrinsicSize: '600px' }}
+                onMouseEnter={() => prefetchFullRes(photo.fullSrc)}
+                onClick={() => setLightboxImage(photo.fullSrc)}
               >
                 <div className="overflow-hidden">
                   <Image
-                    src={photo.src}
+                    src={photo.previewSrc}
                     alt={`${photo.category} - ${photo.filename}`}
                     width={800}
                     height={600}
                     className="w-full h-auto object-cover transition-transform duration-300 group-hover:scale-105"
-                    quality={75}
+                    quality={60}
+                    sizes="(max-width: 639px) 100vw, (max-width: 1023px) 50vw, (max-width: 1279px) 33vw, 25vw"
+                    loading={index < 6 ? 'eager' : 'lazy'}
+                    priority={index < 3}
                   />
                 </div>
-              </motion.div>
+              </div>
             ))}
           </motion.div>
+        )}
+
+        {!loading && filteredPhotos.length > visiblePhotos.length && (
+          <div ref={loadMoreRef} className="h-12" aria-hidden />
         )}
 
         {/* Lightbox */}
@@ -150,6 +222,9 @@ const Photography = () => {
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
             className="fixed inset-0 z-[10000] bg-black/95 flex items-center justify-center p-4"
+            role="dialog"
+            aria-modal="true"
+            aria-label="Photo viewer"
             onClick={() => setLightboxImage(null)}
           >
             <button
@@ -158,14 +233,18 @@ const Photography = () => {
             >
               ×
             </button>
-            <Image
-              src={lightboxImage}
-              alt="Fullscreen view"
-              width={1920}
-              height={1080}
-              className="max-w-full max-h-[90vh] w-auto h-auto object-contain"
-              quality={90}
-            />
+            <div onClick={(event) => event.stopPropagation()}>
+              <Image
+                src={lightboxImage}
+                alt="Fullscreen view"
+                width={1920}
+                height={1080}
+                className="max-w-full max-h-[90vh] w-auto h-auto object-contain"
+                quality={85}
+                sizes="100vw"
+                priority
+              />
+            </div>
           </motion.div>
         )}
       </div>

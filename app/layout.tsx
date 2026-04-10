@@ -41,7 +41,7 @@ export default function RootLayout({
         />
       </head>
       <body
-        className={`${roboto.variable} font-roboto antialiased bg-white dark:bg-black text-black dark:text-white`}
+        className={`${roboto.variable} font-sans antialiased bg-white dark:bg-black text-black dark:text-white`}
       >
         <RootLayoutClient>
           <Navigation />

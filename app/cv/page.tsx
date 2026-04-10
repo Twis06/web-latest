@@ -2,6 +2,7 @@
 
 import React from 'react';
 import { motion } from 'framer-motion';
+import Image from 'next/image';
 import PageTransition from '../components/PageTransition';
 
 const CV = () => {
@@ -41,7 +42,7 @@ const CV = () => {
               <div className="border-l-2 border-gray-300 dark:border-gray-700 pl-6">
                 <h3 className="text-xl font-light mb-1">IBDP Candidate, Shanghai Pinghe School</h3>
                 {/* <p className="text-gray-600 dark:text-gray-400 text-sm mb-2">2023 - 2025</p> */}
-                <p className="text-sm">Graduated on the Principal's List (top 5% of class)</p>
+                <p className="text-sm">Graduated on the Principal&apos;s List (top 5% of class)</p>
               </div>
             </div>
           </motion.section>
@@ -70,6 +71,7 @@ const CV = () => {
                   height="210"
                   src="https://www.youtube.com/embed/8VKSx1zSg7Q?autoplay=1&mute=1&loop=1&playlist=8VKSx1zSg7Q"
                   title="Reconfigurable legged machines in the wild"
+                  loading="lazy"
                   frameBorder="0"
                   allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
                   referrerPolicy="strict-origin-when-cross-origin"
@@ -92,6 +94,8 @@ const CV = () => {
                   autoPlay
                   loop
                   muted
+                  playsInline
+                  preload="metadata"
                   className="w-60 h-auto rounded flex-shrink-0"
                 />
               </div>
@@ -109,7 +113,9 @@ const CV = () => {
                   autoPlay
                   loop
                   muted
-                  className="w-50 h-auto rounded flex-shrink-0"
+                  playsInline
+                  preload="metadata"
+                  className="w-52 h-auto rounded flex-shrink-0"
                 />
               </div>
               <div className="border-l-2 border-gray-300 dark:border-gray-700 pl-6">
@@ -145,10 +151,10 @@ const CV = () => {
                   <li>• Optimized MobileNetV3 + DeepLabV3+ on Jetson Xavier NX via TensorRT, achieving ~3ms inference and &gt;60Hz closed-loop control.</li>
                 </ul>
                 <div className="grid grid-cols-2 gap-4 mb-8">
-                  <img src="/cv/takeoff-1-80deg.gif" alt="Drone takeoff 1" className="w-full h-auto rounded" />
-                  <img src="/cv/takeoff-4-80deg.gif" alt="Drone takeoff 4" className="w-full h-auto rounded" />
-                  <img src="/cv/takeoff-9-45deg.gif" alt="Drone takeoff 9" className="w-full h-auto rounded" />
-                  <img src="/cv/takeoff-low1-80deg.gif" alt="Drone takeoff low" className="w-full h-auto rounded" />
+                  <Image src="/cv/takeoff-1-80deg.gif" alt="Drone takeoff 1" width={600} height={360} unoptimized className="w-full h-auto rounded" />
+                  <Image src="/cv/takeoff-4-80deg.gif" alt="Drone takeoff 4" width={600} height={360} unoptimized className="w-full h-auto rounded" />
+                  <Image src="/cv/takeoff-9-45deg.gif" alt="Drone takeoff 9" width={600} height={360} unoptimized className="w-full h-auto rounded" />
+                  <Image src="/cv/takeoff-low1-80deg.gif" alt="Drone takeoff low" width={600} height={360} unoptimized className="w-full h-auto rounded" />
                 </div>
               </div>
 

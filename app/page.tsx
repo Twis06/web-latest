@@ -3,10 +3,17 @@
 import { useEffect, useRef } from 'react';
 import Lenis from '@studio-freight/lenis';
 import gsap from 'gsap';
+import Image from 'next/image';
+import Link from 'next/link';
+
+interface LayerTrack {
+  trackImage: HTMLElement;
+  layerStartScroll: number;
+  layerDuration: number;
+}
 
 const Home = () => {
   const mainRef = useRef<HTMLDivElement>(null);
-  const lenisRef = useRef<Lenis | null>(null);
 
   useEffect(() => {
     if (!mainRef.current) return;
@@ -16,7 +23,6 @@ const Home = () => {
       lerp: 0.1,
       smoothWheel: true,
     });
-    lenisRef.current = lenis;
 
     gsap.ticker.lagSmoothing(0);
 
@@ -25,7 +31,7 @@ const Home = () => {
     const trackImages = mainRef.current.querySelectorAll('[data-track-image]');
 
     // Pre-calculate all layer positions and create cache
-    const layerTracks = Array.from(textLayers).map((layer, index) => {
+    const layerTracks = Array.from(textLayers).map((layer): LayerTrack | null => {
       const layerNumber = parseInt((layer as HTMLElement).dataset.layer || '1');
       const trackImage = trackImages[layerNumber - 1] as HTMLElement;
 
@@ -36,21 +42,15 @@ const Home = () => {
       const viewportHeight = window.innerHeight;
 
       return {
-        layer: layer as HTMLElement,
-        trackImage: trackImage,
-        layerNumber: layerNumber,
-        layerTop,
-        layerHeight,
-        viewportHeight,
+        trackImage,
         layerStartScroll: layerTop - viewportHeight,
-        layerEndScroll: layerTop + layerHeight,
-        layerDuration: (layerTop + layerHeight) - (layerTop - viewportHeight),
+        layerDuration: layerHeight + viewportHeight,
       };
-    }).filter(Boolean);
+    }).filter((track): track is LayerTrack => track !== null);
 
     // Handle scroll with optimized calculations
     const handleScroll = ({ scroll }: { scroll: number }) => {
-      (layerTracks as any[]).forEach(({ trackImage, layerStartScroll, layerEndScroll, layerDuration }) => {
+      layerTracks.forEach(({ trackImage, layerStartScroll, layerDuration }) => {
         // Calculate progress
         let progress = (scroll - layerStartScroll) / layerDuration;
         progress = Math.max(0, Math.min(1, progress));
@@ -93,7 +93,7 @@ const Home = () => {
         }
         // Destroy Lenis - this will clean up listeners
         lenis.destroy();
-      } catch (e) {
+      } catch {
         // Silently catch errors to avoid breaking component cleanup
       }
     };
@@ -108,7 +108,7 @@ const Home = () => {
             Ben Li
           </h1>
           <p className="text-lg md:text-2xl font-light text-gray-400 opacity-0" data-hero-text="title">
-            Developer & <a href="/photography">Photographer</a>
+            Developer & <Link href="/photography">Photographer</Link>
           </p>
           <div className="text-sm text-gray-500 opacity-0 pt-8" data-hero-text="info">
             2026
@@ -119,24 +119,33 @@ const Home = () => {
       {/* Fixed Image Container - All images here, track drives clip-path */}
       <div className="fixed-images-container">
         <div data-track-image="1" className="track-image">
-          <img
+          <Image
             src="/photography/DSC04715-min.jpg"
             alt="Project Alpha"
+            fill
+            sizes="(max-width: 1024px) 50vw, 30vw"
             className="w-full h-full object-cover"
+            priority
           />
         </div>
         <div data-track-image="2" className="track-image">
-          <img
+          <Image
             src="/photography/DSC04760-min.jpg"
             alt="Project Beta"
+            fill
+            sizes="(max-width: 1024px) 50vw, 30vw"
             className="w-full h-full object-cover"
+            priority
           />
         </div>
         <div data-track-image="3" className="track-image">
-          <img
+          <Image
             src="/photography/DSC04767-min.jpg"
             alt="Project Gamma"
+            fill
+            sizes="(max-width: 1024px) 50vw, 30vw"
             className="w-full h-full object-cover"
+            priority
           />
         </div>
       </div>
@@ -145,31 +154,31 @@ const Home = () => {
 
       {/* Layer 1: Project Alpha */}
       <section className="text-layer h-screen flex items-center justify-center relative z-20 pt-20" data-layer="1">
-        <h2 className="text-6xl md:text-8xl font-light text-white text-center"><a href="/photography">2025</a></h2>
+        <h2 className="text-6xl md:text-8xl font-light text-white text-center"><Link href="/photography">2025</Link></h2>
       </section>
 
       {/* Layer 2: Project Beta */}
       <section className="text-layer h-screen flex items-center justify-center relative z-20 pt-20" data-layer="2">
-        <h2 className="text-6xl md:text-8xl font-light text-white text-center"><a href="/photography">2024</a></h2>
+        <h2 className="text-6xl md:text-8xl font-light text-white text-center"><Link href="/photography">2024</Link></h2>
       </section>
 
       {/* Layer 3: Project Gamma */}
       <section className="text-layer h-screen flex items-center justify-center relative z-20 pt-20" data-layer="3">
-        <h2 className="text-6xl md:text-8xl font-light text-white text-center"><a href="/photography">2023</a></h2>
+        <h2 className="text-6xl md:text-8xl font-light text-white text-center"><Link href="/photography">2023</Link></h2>
       </section>
 
       {/* Footer */}
-      <section className="bg-black flex items-center justify-center relative z-10 py-100">
+      <section className="bg-black flex items-center justify-center relative z-10 py-24 md:py-32">
         <div className="text-center space-y-8 max-w-3xl px-4 h-full flex flex-col justify-center">
           <h2 className="text-5xl md:text-7xl font-light">Get in touch</h2>
           <p className="text-gray-400 text-lg md:text-xl leading-relaxed">
-            If you have a project in mind, feel free to reach out. I'm always eager to learn and explore new ideas.
+            If you have a project in mind, feel free to reach out. I&apos;m always eager to learn and explore new ideas.
           </p>
           <div className="space-y-4 pt-8">
             <p className="text-gray-500"><a href="mailto:twislpy01@icloud.com">Email</a></p>
-            <p className="text-gray-500"><a href="https://github.com/Twis06">GitHub</a></p>
+            <p className="text-gray-500"><a href="https://github.com/Twis06" target="_blank" rel="noopener noreferrer">GitHub</a></p>
           </div>
-          <p className="text-gray-600 text-sm pt-12">© 2025 Ben Li. All rights reserved.</p>
+          <p className="text-gray-600 text-sm pt-12">© 2026 Ben Li. All rights reserved.</p>
         </div>
       </section>
 

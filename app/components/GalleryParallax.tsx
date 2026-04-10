@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useRef } from 'react';
 import { ImageTransform } from '@/app/lib/track';
 import Lenis from '@studio-freight/lenis';
 import gsap from 'gsap';
@@ -13,8 +13,6 @@ interface PortfolioItem {
 
 const GalleryParallax = () => {
   const containerRef = useRef<HTMLDivElement>(null);
-  const [scrollY, setScrollY] = useState(0);
-  const lenisRef = useRef<Lenis | null>(null);
   const tracksRef = useRef<ImageTransform[]>([]);
 
   const portfolioItems: PortfolioItem[] = [
@@ -31,8 +29,6 @@ const GalleryParallax = () => {
       lerp: 0.1,
       smoothWheel: true,
     });
-
-    lenisRef.current = lenis;
 
     // Initialize tracks for each image
     const imageElements = containerRef.current.querySelectorAll('[data-track]');
@@ -54,7 +50,6 @@ const GalleryParallax = () => {
 
     // Scroll listener
     const handleScroll = ({ scroll }: { scroll: number }) => {
-      setScrollY(scroll);
       tracksRef.current.forEach((track) => track.render(scroll));
     };
 
@@ -62,22 +57,21 @@ const GalleryParallax = () => {
 
     // Animation loop
     gsap.ticker.lagSmoothing(0);
-    gsap.ticker.add((time) => {
+    const handleTick = (time: number) => {
       lenis.raf(time * 1000);
-    });
+    };
+    gsap.ticker.add(handleTick);
 
     return () => {
       lenis.destroy();
       resizeObserver.disconnect();
-      gsap.ticker.remove((time) => {
-        lenis.raf(time * 1000);
-      });
+      gsap.ticker.remove(handleTick);
     };
   }, []);
 
   return (
     <div ref={containerRef} className="relative w-full bg-black">
-      {portfolioItems.map((item, index) => (
+      {portfolioItems.map((item) => (
         <section
           key={item.id}
           className="relative w-full h-screen flex items-center justify-center overflow-hidden"

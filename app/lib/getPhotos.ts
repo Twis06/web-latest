@@ -1,5 +1,6 @@
 import fs from 'fs';
 import path from 'path';
+import { PHOTO_CATEGORIES, isPhotoFile } from './photos';
 
 export interface Photo {
   src: string;
@@ -17,7 +18,7 @@ export function getPhotoCategories(): PhotoCategory[] {
   const photosDirectory = path.join(process.cwd(), 'public', 'photography');
   
   // Define category order
-  const categoryOrder = ['2025', '2024', '2023', 'travel', 'food'];
+  const categoryOrder = [...PHOTO_CATEGORIES];
   
   const categories: PhotoCategory[] = [];
 
@@ -43,10 +44,7 @@ export function getPhotoCategories(): PhotoCategory[] {
     const files = fs.readdirSync(categoryPath);
     
     // Filter for image files
-    const imageFiles = files.filter(file => {
-      const ext = path.extname(file).toLowerCase();
-      return ['.jpg', '.jpeg', '.png', '.webp', '.gif'].includes(ext);
-    });
+    const imageFiles = files.filter((file) => isPhotoFile(file));
 
     const photos: Photo[] = imageFiles.map(file => ({
       src: `/photography/${category}/${file}`,

@@ -1,43 +1,19 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { motion } from 'framer-motion';
-import { Sun, Moon } from 'lucide-react';
+import { SunMoon } from 'lucide-react';
 
 const Navigation = () => {
   const pathname = usePathname();
   const [isOpen, setIsOpen] = useState(false);
-  const [theme, setTheme] = useState<'light' | 'dark'>('dark');
-
-  useEffect(() => {
-    // Initialize theme state
-    const currentTheme = document.documentElement.getAttribute('data-theme') as 'light' | 'dark';
-    if (currentTheme) {
-      setTheme(currentTheme);
-    } else {
-      // Fallback if script didn't run or something
-      const systemTheme = window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
-      setTheme(systemTheme);
-    }
-
-    // Listen for system changes
-    const mediaQuery = window.matchMedia('(prefers-color-scheme: dark)');
-    const handleChange = (e: MediaQueryListEvent) => {
-      if (!localStorage.getItem('theme-preference')) {
-        const newTheme = e.matches ? 'dark' : 'light';
-        setTheme(newTheme);
-        document.documentElement.setAttribute('data-theme', newTheme);
-      }
-    };
-    mediaQuery.addEventListener('change', handleChange);
-    return () => mediaQuery.removeEventListener('change', handleChange);
-  }, []);
 
   const toggleTheme = () => {
-    const newTheme = theme === 'light' ? 'dark' : 'light';
-    setTheme(newTheme);
+    const currentTheme =
+      document.documentElement.getAttribute('data-theme') === 'light' ? 'light' : 'dark';
+    const newTheme = currentTheme === 'light' ? 'dark' : 'light';
     localStorage.setItem('theme-preference', newTheme);
     document.documentElement.setAttribute('data-theme', newTheme);
   };
@@ -52,7 +28,7 @@ const Navigation = () => {
   const isActive = (href: string) => pathname === href;
 
   return (
-    <nav className="fixed top-0 left-0 right-0 z-9999 bg-white/30 dark:bg-black/10 backdrop-blur-lg border-b border-white/5">
+    <nav className="fixed top-0 left-0 right-0 z-[9999] bg-white/30 dark:bg-black/10 backdrop-blur-lg border-b border-white/5">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between items-center h-14">
           {/* Logo/Name */}
@@ -88,11 +64,7 @@ const Navigation = () => {
               className="p-2 rounded-full hover:bg-black/5 dark:hover:bg-white/10 transition-colors"
               aria-label="Toggle theme"
             >
-              {theme === 'dark' ? (
-                <Sun className="w-5 h-5 text-gray-700 dark:text-gray-300" />
-              ) : (
-                <Moon className="w-5 h-5 text-gray-700 dark:text-gray-300" />
-              )}
+              <SunMoon className="w-5 h-5 text-gray-700 dark:text-gray-300" />
             </button>
 
             {/* Mobile Menu Button */}

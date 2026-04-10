@@ -43,7 +43,7 @@ const Projects = () => {
           >
             <h1 className="text-6xl md:text-7xl font-light mb-2">Projects</h1>
             <p className="text-gray-600 dark:text-gray-400 font-light mb-12">
-              A selection of work I've created
+              A selection of work I&apos;ve created
             </p>
           </motion.div>
 

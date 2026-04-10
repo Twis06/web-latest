@@ -20,7 +20,14 @@ const Preloader = ({ onComplete }: PreloaderProps) => {
     const splitDuration = totalDuration / preloadValues.length;
 
     let count = 0;
-    let interval: NodeJS.Timeout;
+    const interval = setInterval(() => {
+      if (count < preloadValues.length) {
+        updateNumber(preloadValues[count]);
+        count += 1;
+      } else {
+        destroy();
+      }
+    }, splitDuration * 1000);
 
     const updateNumber = (val: number) => {
       const number = numberRef.current;
@@ -53,16 +60,6 @@ const Preloader = ({ onComplete }: PreloaderProps) => {
         });
       }
     };
-
-    // Start the preloader animation
-    interval = setInterval(() => {
-      if (count < preloadValues.length) {
-        updateNumber(preloadValues[count]);
-        count++;
-      } else {
-        destroy();
-      }
-    }, splitDuration * 1000);
 
     return () => {
       clearInterval(interval);
