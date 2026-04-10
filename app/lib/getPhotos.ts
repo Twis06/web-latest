@@ -18,7 +18,7 @@ export function getPhotoCategories(): PhotoCategory[] {
   const photosDirectory = path.join(process.cwd(), 'public', 'photography');
   
   // Define category order
-  const categoryOrder = [...PHOTO_CATEGORIES];
+  const categoryOrder: string[] = [...PHOTO_CATEGORIES];
   
   const categories: PhotoCategory[] = [];
 
