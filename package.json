@@ -3,19 +3,17 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "photos:thumbs": "node scripts/generate-photo-thumbnails.mjs",
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
     "lint": "eslint"
   },
   "dependencies": {
-    "@studio-freight/lenis": "^1.0.42",
     "framer-motion": "^12.23.24",
     "gsap": "^3.13.0",
+    "lenis": "^1.3.23",
     "lucide-react": "^0.556.0",
     "next": "^16.0.7",
-    "next-themes": "^0.4.6",
     "react": "19.2.0",
     "react-dom": "19.2.0"
   },

@@ -236,7 +236,7 @@ const CV = () => {
                 <p className="text-gray-600 dark:text-gray-400 text-sm mb-4"></p>
                 <ul className="space-y-2 text-sm">
                   <li>• Designing hierarchical architecture: VLA model for high-level mission planning, with learned low-level control policies for agile flight.</li>
-                  <li>• Acheived stable flight with payloads in cluttered environments in IsaacSim.</li>
+                  <li>• Achieved stable flight with payloads in cluttered environments in IsaacSim.</li>
                   <li>• Building multi-agent simulation for autonomous delivery, collaborative mapping, and object search tasks.</li>
                 </ul>
               </div>
@@ -337,7 +337,7 @@ const CV = () => {
             <p className="text-gray-700 dark:text-gray-300">
               Photography, Filmmaking, Travel, Soccer, Badminton. View my{' '}
               <a
-                href="https://www.twis.onl/photography"
+                href="https://mediaportfolio.vercel.app/"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="hover:underline"

@@ -11,8 +11,8 @@ const roboto = Roboto({
 });
 
 export const metadata: Metadata = {
-  title: "Lipeiyang",
-  description: "Personal portfolio website",
+  title: "Ben Li | Portfolio",
+  description: "Computer science, robotics, AI, and media portfolio for Peiyang (Ben) Li.",
 };
 
 export default function RootLayout({
@@ -43,9 +43,15 @@ export default function RootLayout({
       <body
         className={`${roboto.variable} font-sans antialiased bg-white dark:bg-black text-black dark:text-white`}
       >
+        <a
+          href="#main-content"
+          className="sr-only focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-[10000] focus:rounded focus:bg-white focus:px-4 focus:py-2 focus:text-black"
+        >
+          Skip to main content
+        </a>
         <RootLayoutClient>
           <Navigation />
-          <main>{children}</main>
+          <main id="main-content">{children}</main>
         </RootLayoutClient>
       </body>
     </html>

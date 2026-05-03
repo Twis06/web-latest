@@ -9,6 +9,7 @@ import { SunMoon } from 'lucide-react';
 const Navigation = () => {
   const pathname = usePathname();
   const [isOpen, setIsOpen] = useState(false);
+  const photographyPortfolioUrl = 'https://mediaportfolio.vercel.app/';
 
   const toggleTheme = () => {
     const currentTheme =
@@ -21,11 +22,10 @@ const Navigation = () => {
   const navItems = [
     { label: 'Home', href: '/' },
     { label: 'CV', href: '/cv' },
-    { label: 'Projects', href: '/projects' },
-    { label: 'Photography', href: '/photography' },
+    { label: 'Photography', href: photographyPortfolioUrl, external: true },
   ];
 
-  const isActive = (href: string) => pathname === href;
+  const isActive = (href: string, external?: boolean) => !external && pathname === href;
 
   return (
     <nav className="fixed top-0 left-0 right-0 z-[9999] bg-white/30 dark:bg-black/10 backdrop-blur-lg border-b border-white/5">
@@ -39,23 +39,38 @@ const Navigation = () => {
           <div className="flex items-center gap-4">
             {/* Desktop Navigation */}
             <div className="hidden md:flex gap-8">
-              {navItems.map((item) => (
-                <Link
-                  key={item.href}
-                  href={item.href}
-                  className="relative text-sm font-medium text-gray-700 dark:text-gray-300 transition-colors hover:text-black dark:hover:text-white"
-                >
-                  {item.label}
-                  {isActive(item.href) && (
-                    <motion.div
-                      layoutId="activeIndicator"
-                      className="absolute -bottom-1 left-0 right-0 h-px bg-black dark:bg-white"
-                      initial={false}
-                      transition={{ type: 'spring', stiffness: 380, damping: 30 }}
-                    />
-                  )}
-                </Link>
-              ))}
+              {navItems.map((item) => {
+                const className = "relative text-sm font-medium text-gray-700 dark:text-gray-300 transition-colors hover:text-black dark:hover:text-white";
+                const active = isActive(item.href, item.external);
+
+                return item.external ? (
+                  <a
+                    key={item.href}
+                    href={item.href}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className={className}
+                  >
+                    {item.label}
+                  </a>
+                ) : (
+                  <Link
+                    key={item.href}
+                    href={item.href}
+                    className={className}
+                  >
+                    {item.label}
+                    {active && (
+                      <motion.div
+                        layoutId="activeIndicator"
+                        className="absolute -bottom-1 left-0 right-0 h-px bg-black dark:bg-white"
+                        initial={false}
+                        transition={{ type: 'spring', stiffness: 380, damping: 30 }}
+                      />
+                    )}
+                  </Link>
+                );
+              })}
             </div>
 
             {/* Theme Toggle */}
@@ -72,6 +87,7 @@ const Navigation = () => {
               className="md:hidden flex flex-col gap-1 w-5 h-4"
               onClick={() => setIsOpen(!isOpen)}
               aria-label="Toggle menu"
+            aria-expanded={isOpen}
             >
               <motion.div
                 className="w-full h-px bg-black dark:bg-white origin-left"
@@ -100,20 +116,35 @@ const Navigation = () => {
           transition={{ duration: 0.3 }}
         >
           <div className="pb-3 pt-2 space-y-1">
-            {navItems.map((item) => (
-              <Link
-                key={item.href}
-                href={item.href}
-                className={`block px-3 py-2 text-sm font-medium rounded transition-colors ${
-                  isActive(item.href)
-                    ? 'bg-black dark:bg-white text-white dark:text-black'
-                    : 'text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-900'
-                }`}
-                onClick={() => setIsOpen(false)}
-              >
-                {item.label}
-              </Link>
-            ))}
+            {navItems.map((item) => {
+              const className = `block px-3 py-2 text-sm font-medium rounded transition-colors ${
+                isActive(item.href, item.external)
+                  ? 'bg-black dark:bg-white text-white dark:text-black'
+                  : 'text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-900'
+              }`;
+
+              return item.external ? (
+                <a
+                  key={item.href}
+                  href={item.href}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className={className}
+                  onClick={() => setIsOpen(false)}
+                >
+                  {item.label}
+                </a>
+              ) : (
+                <Link
+                  key={item.href}
+                  href={item.href}
+                  className={className}
+                  onClick={() => setIsOpen(false)}
+                >
+                  {item.label}
+                </Link>
+              );
+            })}
           </div>
         </motion.div>
       </div>
