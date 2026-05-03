@@ -7,29 +7,22 @@ import PageTransition from '../components/PageTransition';
 const Projects = () => {
   const projects = [
     {
-      title: 'Projects',
-      description: 'Current Under Development for markdown support, see cv page for more info',
-      tags: [],
-      link: '#',
-    }
-    // {
-    //   title: 'Project One',
-    //   description: 'A brief description of your first project.',
-    //   tags: ['React', 'TypeScript', 'Tailwind'],
-    //   link: '#',
-    // },
-    // {
-    //   title: 'Project Two',
-    //   description: 'A brief description of your second project.',
-    //   tags: ['Next.js', 'PostgreSQL'],
-    //   link: '#',
-    // },
-    // {
-    //   title: 'Project Three',
-    //   description: 'A brief description of your third project.',
-    //   tags: ['React', 'Framer Motion', 'Design'],
-    //   link: '#',
-    // },
+      title: 'Zombies VS Plants',
+      description: 'Real-time PvP Plants vs. Zombies-inspired strategy game with playable plant/zombie sides, AI opponents trained from gameplay logs, and a CV physical board interface.',
+      tags: ['JavaScript', 'HTML/CSS', 'Python', 'Computer Vision', 'AI Agents'],
+      links: [
+        { label: 'GitHub', href: 'https://github.com/Twis06/wildhack_pvz' },
+        { label: 'Video', href: 'https://www.youtube.com/watch?v=29wHaHFr8EQ' },
+      ],
+    },
+    {
+      title: 'Beatbox-to-Drum Generation',
+      description: 'Beatbox-to-drum generation system that converts vocal percussion into symbolic 9-class drum patterns using flow matching, MIDI tooling, and human-feedback ranking.',
+      tags: ['Python', 'PyTorch', 'torchaudio', 'Flow Matching', 'MIDI'],
+      links: [
+        { label: 'Demo', href: 'https://bbox-translator-demo.vercel.app/' },
+      ],
+    },
   ];
 
   return (
@@ -67,9 +60,19 @@ const Projects = () => {
                     </span>
                   ))}
                 </div>
-                <Link href={project.link} className="inline-block text-gray-900 dark:text-white font-light hover:text-gray-600 dark:hover:text-gray-400">
-                  View →
-                </Link>
+                <div className="flex flex-wrap gap-4">
+                  {project.links.map((link) => (
+                    <Link
+                      key={link.href}
+                      href={link.href}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="inline-block text-gray-900 dark:text-white font-light hover:text-gray-600 dark:hover:text-gray-400"
+                    >
+                      {link.label} →
+                    </Link>
+                  ))}
+                </div>
               </motion.div>
             ))}
           </div>

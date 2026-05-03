@@ -140,6 +140,49 @@ const CV = () => {
             <h2 className="text-3xl font-light mb-8">Projects</h2>
             <div className="space-y-12">
               {/* Completed Projects */}
+              <div className="border-l-2 border-gray-300 dark:border-gray-700 pl-6 flex flex-col lg:flex-row gap-6 items-start">
+                <div className="flex-1">
+                  <h3 className="text-xl font-light mb-1">Zombies VS Plants</h3>
+                  <p className="text-gray-600 dark:text-gray-400 text-sm mb-3">JavaScript, HTML/CSS, Python, Computer Vision, AI Agents</p>
+                  <div className="flex flex-wrap gap-x-4 gap-y-2 text-sm mb-4">
+                    <a href="https://github.com/Twis06/wildhack_pvz" target="_blank" rel="noopener noreferrer" className="text-[#434E78] dark:text-[#7A84B8] hover:underline">
+                      GitHub →
+                    </a>
+                    <a href="https://www.youtube.com/watch?v=29wHaHFr8EQ" target="_blank" rel="noopener noreferrer" className="text-[#434E78] dark:text-[#7A84B8] hover:underline">
+                      Video →
+                    </a>
+                  </div>
+                  <ul className="space-y-2 text-sm">
+                    <li>• Built a real-time PvP strategy game inspired by Plants vs. Zombies, adding playable plant/zombie sides, local 1v1 gameplay, animated sprites, sound effects, and AI opponents trained from recorded gameplay logs.</li>
+                    <li>• Integrated a computer-vision physical board interface that detects real-world game pieces and maps their type/location onto the in-game grid; built in 24 hours at WildHacks 2026.</li>
+                  </ul>
+                </div>
+                <iframe
+                  width="360"
+                  height="203"
+                  src="https://www.youtube.com/embed/29wHaHFr8EQ"
+                  title="Zombies VS Plants demo"
+                  loading="lazy"
+                  frameBorder="0"
+                  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                  referrerPolicy="strict-origin-when-cross-origin"
+                  allowFullScreen
+                  className="w-full lg:w-[360px] aspect-video rounded flex-shrink-0"
+                />
+              </div>
+
+              <div className="border-l-2 border-gray-300 dark:border-gray-700 pl-6">
+                <h3 className="text-xl font-light mb-1">Beatbox-to-Drum Generation</h3>
+                <p className="text-gray-600 dark:text-gray-400 text-sm mb-3">Python, PyTorch, torchaudio, Flow Matching, MIDI, Human Feedback</p>
+                <a href="https://bbox-translator-demo.vercel.app/" target="_blank" rel="noopener noreferrer" className="text-sm text-[#434E78] dark:text-[#7A84B8] hover:underline mb-4 inline-block">
+                  Demo Website →
+                </a>
+                <ul className="space-y-2 text-sm">
+                  <li>• Developed a beatbox-to-drum generation system that converts vocal percussion recordings into symbolic 9-class drum patterns using a flow-matching-based generative model.</li>
+                  <li>• Built an audio preprocessing/model training pipeline, MIDI/audio tooling, and a human-feedback review loop for ranking outputs, training reward models, and iteratively improving rhythmic alignment and musical realism.</li>
+                </ul>
+              </div>
+
               <div>
                 <h3 className="text-xl font-light mb-1">End-to-End High-Speed Drone Navigation System</h3>
                 <p className="text-gray-600 dark:text-gray-400 text-sm mb-4">2025</p>

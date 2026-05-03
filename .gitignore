@@ -24,7 +24,6 @@
 
 # misc
 /video_processor
-/public/photography-thumbs/
 # misc
 .DS_Store
 *.pem
@@ -44,3 +43,5 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+Resume/ 
