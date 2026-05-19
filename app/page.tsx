@@ -1,36 +1,77 @@
 'use client';
 
-import { useEffect } from 'react';
+import { useEffect, useRef } from 'react';
 import Lenis from 'lenis';
-import Link from 'next/link';
+import gsap from 'gsap';
+import Image from 'next/image';
 
 const PHOTOGRAPHY_PORTFOLIO_URL = 'https://mediaportfolio.vercel.app/';
 
-const highlights = [
-  {
-    label: 'Computer Vision',
-    title: 'CV / Robotics',
-    description: 'Vision-to-control systems, embodied AI, and simulation-to-real projects.',
-    href: '/cv',
-    external: false,
-  },
-  {
-    label: 'Archive',
-    title: 'Photography',
-    description: 'Photo essays and visual work now live on the dedicated media portfolio.',
-    href: PHOTOGRAPHY_PORTFOLIO_URL,
-    external: true,
-  },
-];
+interface LayerTrack {
+  trackImage: HTMLElement;
+  layerStartScroll: number;
+  layerDuration: number;
+}
 
 const Home = () => {
+  const mainRef = useRef<HTMLDivElement>(null);
+
   useEffect(() => {
+    if (!mainRef.current) return;
+
     if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
 
     const lenis = new Lenis({
       lerp: 0.1,
       smoothWheel: true,
     });
+
+    gsap.ticker.lagSmoothing(0);
+
+    const textLayers = mainRef.current.querySelectorAll('[data-layer]');
+    const trackImages = mainRef.current.querySelectorAll('[data-track-image]');
+
+    const layerTracks = Array.from(textLayers).map((layer): LayerTrack | null => {
+      const layerNumber = parseInt((layer as HTMLElement).dataset.layer || '1');
+      const trackImage = trackImages[layerNumber - 1] as HTMLElement;
+
+      if (!trackImage) return null;
+
+      const layerTop = (layer as HTMLElement).offsetTop;
+      const layerHeight = (layer as HTMLElement).offsetHeight;
+      const viewportHeight = window.innerHeight;
+
+      return {
+        trackImage,
+        layerStartScroll: layerTop - viewportHeight,
+        layerDuration: layerHeight + viewportHeight,
+      };
+    }).filter((track): track is LayerTrack => track !== null);
+
+    const handleScroll = ({ scroll }: { scroll: number }) => {
+      layerTracks.forEach(({ trackImage, layerStartScroll, layerDuration }) => {
+        let progress = (scroll - layerStartScroll) / layerDuration;
+        progress = Math.max(0, Math.min(1, progress));
+
+        let topCrop = 0;
+        let bottomCrop = 0;
+
+        if (progress < 0.5) {
+          topCrop = (1 - progress * 2) * 100;
+          bottomCrop = 0;
+        } else if (progress < 1) {
+          topCrop = 0;
+          bottomCrop = (progress - 0.5) * 2 * 100;
+        } else {
+          topCrop = 0;
+          bottomCrop = 100;
+        }
+
+        trackImage.style.clipPath = `inset(${topCrop}% 0 ${bottomCrop}% 0)`;
+      });
+    };
+
+    lenis.on('scroll', handleScroll);
 
     let animationId: number;
     const animate = () => {
@@ -49,9 +90,9 @@ const Home = () => {
   }, []);
 
   return (
-    <div className="w-full bg-black text-white">
+    <div ref={mainRef} className="w-full bg-black text-white">
       {/* Hero Section - Ben Li */}
-      <section className="min-h-screen flex items-center justify-center px-4 relative z-40 bg-black">
+      <section className="h-screen flex items-center justify-center px-4 relative z-40 bg-black">
         <div className="text-center space-y-4">
           <h1 className="text-6xl md:text-8xl font-light tracking-tight opacity-0" data-hero-text="name">
             Ben Li
@@ -68,30 +109,55 @@ const Home = () => {
         </div>
       </section>
 
-      <section className="relative z-20 px-4 py-24 md:py-32 bg-neutral-950">
-        <div className="mx-auto grid max-w-4xl grid-cols-1 gap-6 md:grid-cols-2">
-          {highlights.map((item) => {
-            const className = 'group block min-h-80 rounded-3xl border border-white/10 bg-white/[0.03] p-8 transition hover:-translate-y-1 hover:border-white/30 hover:bg-white/[0.06]';
-            const content = (
-              <>
-                <p className="text-sm uppercase tracking-[0.3em] text-gray-500">{item.label}</p>
-                <h2 className="mt-24 text-4xl font-light">{item.title}</h2>
-                <p className="mt-4 text-sm leading-6 text-gray-400">{item.description}</p>
-                <p className="mt-8 text-sm text-gray-300 group-hover:text-white">View →</p>
-              </>
-            );
-
-            return item.external ? (
-              <a key={item.title} href={item.href} target="_blank" rel="noopener noreferrer" className={className}>
-                {content}
-              </a>
-            ) : (
-              <Link key={item.title} href={item.href} className={className}>
-                {content}
-              </Link>
-            );
-          })}
+      <div className="fixed-images-container">
+        <div data-track-image="1" className="track-image">
+          <Image
+            src="/photography/DSC04715-min.jpg"
+            alt="2025 photography"
+            fill
+            sizes="(max-width: 1024px) 50vw, 30vw"
+            className="w-full h-full object-cover"
+            priority
+          />
         </div>
+        <div data-track-image="2" className="track-image">
+          <Image
+            src="/photography/DSC04760-min.jpg"
+            alt="2024 photography"
+            fill
+            sizes="(max-width: 1024px) 50vw, 30vw"
+            className="w-full h-full object-cover"
+            priority
+          />
+        </div>
+        <div data-track-image="3" className="track-image">
+          <Image
+            src="/photography/DSC04767-min.jpg"
+            alt="2023 photography"
+            fill
+            sizes="(max-width: 1024px) 50vw, 30vw"
+            className="w-full h-full object-cover"
+            priority
+          />
+        </div>
+      </div>
+
+      <section className="text-layer h-screen flex items-center justify-center relative z-20 pt-20" data-layer="1">
+        <h2 className="text-6xl md:text-8xl font-light text-white text-center">
+          <a href={PHOTOGRAPHY_PORTFOLIO_URL} target="_blank" rel="noopener noreferrer">2025</a>
+        </h2>
+      </section>
+
+      <section className="text-layer h-screen flex items-center justify-center relative z-20 pt-20" data-layer="2">
+        <h2 className="text-6xl md:text-8xl font-light text-white text-center">
+          <a href={PHOTOGRAPHY_PORTFOLIO_URL} target="_blank" rel="noopener noreferrer">2024</a>
+        </h2>
+      </section>
+
+      <section className="text-layer h-screen flex items-center justify-center relative z-20 pt-20" data-layer="3">
+        <h2 className="text-6xl md:text-8xl font-light text-white text-center">
+          <a href={PHOTOGRAPHY_PORTFOLIO_URL} target="_blank" rel="noopener noreferrer">2023</a>
+        </h2>
       </section>
 
       {/* Footer */}
@@ -110,6 +176,41 @@ const Home = () => {
       </section>
 
       <style jsx>{`
+        .fixed-images-container {
+          position: fixed;
+          top: 50%;
+          left: 50%;
+          transform: translate(-50%, -50%);
+          width: 30vw;
+          aspect-ratio: 1/1.5;
+          max-height: 80vh;
+          z-index: 50;
+          pointer-events: none;
+        }
+
+        .track-image {
+          position: absolute;
+          width: 100%;
+          height: 100%;
+          clip-path: inset(100% 0 100% 0);
+          overflow: hidden;
+          top: 0;
+          left: 0;
+        }
+
+        .track-image img {
+          width: 100%;
+          height: 100%;
+          object-fit: cover;
+          object-position: center;
+        }
+
+        .text-layer {
+          position: relative;
+          background: transparent;
+          z-index: 70;
+        }
+
         [data-hero-text] {
           display: inline-block;
           animation: fadeIn 0.8s ease-out forwards;
