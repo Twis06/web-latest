@@ -1,241 +1,192 @@
-'use client';
+import { Fragment, cloneElement, isValidElement, type ReactElement, type ReactNode } from "react";
+import type { Entry } from "@/content/cv";
+import { profile, sections } from "@/content/cv";
+import { Arrow } from "./components/arrow";
+import { Contact } from "./components/contact";
+import { Figure } from "./components/figure";
+import { Num } from "./components/num";
+import { Reveal } from "./components/reveal";
+import { Strip, type StripItem } from "./components/strip";
+import { Viewer, type ViewerFigure } from "./components/viewer";
 
-import { useEffect, useRef } from 'react';
-import Lenis from 'lenis';
-import gsap from 'gsap';
-import Image from 'next/image';
+const pad = (n: number) => String(n).padStart(2, "0");
 
-const PHOTOGRAPHY_PORTFOLIO_URL = 'https://mediaportfolio.vercel.app/';
-
-interface LayerTrack {
-  trackImage: HTMLElement;
-  layerStartScroll: number;
-  layerDuration: number;
+// Figures are numbered down the whole page, in reading order; the viewer steps through them and
+// the strip under the name shows them all.
+const figures: ViewerFigure[] = [];
+const strip: StripItem[] = [];
+const figureIndex = new Map<Entry, number>();
+const entryId = (sectionId: string, i: number) => `${sectionId}-${i + 1}`;
+for (const section of sections) {
+  section.entries.forEach((entry, i) => {
+    if (!entry.figure) return;
+    const { media } = entry.figure;
+    const still =
+      media.kind === "clip" ? { poster: media.poster, src: media.src } :
+      media.kind === "grid" ? { poster: media.clips[0].poster, src: media.clips[0].src } :
+      media.kind === "flight" ? { poster: media.runs[0].poster, src: media.runs[0].src } :
+      { poster: media.poster, src: null };
+    strip.push({
+      n: pad(figureIndex.size + 1),
+      title: entry.name ?? (typeof entry.title === "string" ? entry.title : entry.figure.caption),
+      target: entryId(section.id, i),
+      ...still,
+    });
+    figureIndex.set(entry, figureIndex.size);
+  });
+}
+for (const entry of sections.flatMap((section) => section.entries)) {
+  if (!entry.figure) continue;
+  figures.push({
+    n: pad(figures.length + 1),
+    title: entry.name ?? (typeof entry.title === "string" ? entry.title : entry.figure.caption),
+    caption: entry.figure.caption,
+    media: entry.figure.media,
+  });
 }
 
-const Home = () => {
-  const mainRef = useRef<HTMLDivElement>(null);
+// Measured figures in the bullets (95%, 2.26M, <20 ms, 30 Hz, $4,000…) count up as they arrive.
+// Only a number with a unit after it counts, so years, model names and part numbers stay put.
+const MEASURE = /(?<![\w.])(\d{1,3}(?:,\d{3})+|\d+(?:\.\d+)?)(?=\s?(?:%|×|Hz|ms|M\b|°)|(?<=\d,\d{3}))/g;
 
-  useEffect(() => {
-    if (!mainRef.current) return;
+function countUp(node: ReactNode): ReactNode {
+  if (typeof node === "string") {
+    const parts: ReactNode[] = [];
+    let last = 0;
+    for (const match of node.matchAll(MEASURE)) {
+      parts.push(node.slice(last, match.index), <Num key={match.index} value={match[1]} />);
+      last = match.index + match[1].length;
+    }
+    return parts.length ? [...parts, node.slice(last)] : node;
+  }
+  if (Array.isArray(node)) return node.map((child, i) => <Fragment key={i}>{countUp(child)}</Fragment>);
+  if (isValidElement(node) && node.type === Fragment) {
+    const element = node as ReactElement<{ children?: ReactNode }>;
+    return cloneElement(element, undefined, countUp(element.props.children));
+  }
+  return node;
+}
 
-    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+const entryCount = sections.reduce((sum, section) => sum + section.entries.length, 0);
 
-    const lenis = new Lenis({
-      lerp: 0.1,
-      smoothWheel: true,
-    });
-
-    gsap.ticker.lagSmoothing(0);
-
-    const textLayers = mainRef.current.querySelectorAll('[data-layer]');
-    const trackImages = mainRef.current.querySelectorAll('[data-track-image]');
-
-    const layerTracks = Array.from(textLayers).map((layer): LayerTrack | null => {
-      const layerNumber = parseInt((layer as HTMLElement).dataset.layer || '1');
-      const trackImage = trackImages[layerNumber - 1] as HTMLElement;
-
-      if (!trackImage) return null;
-
-      const layerTop = (layer as HTMLElement).offsetTop;
-      const layerHeight = (layer as HTMLElement).offsetHeight;
-      const viewportHeight = window.innerHeight;
-
-      return {
-        trackImage,
-        layerStartScroll: layerTop - viewportHeight,
-        layerDuration: layerHeight + viewportHeight,
-      };
-    }).filter((track): track is LayerTrack => track !== null);
-
-    const handleScroll = ({ scroll }: { scroll: number }) => {
-      layerTracks.forEach(({ trackImage, layerStartScroll, layerDuration }) => {
-        let progress = (scroll - layerStartScroll) / layerDuration;
-        progress = Math.max(0, Math.min(1, progress));
-
-        let topCrop = 0;
-        let bottomCrop = 0;
-
-        if (progress < 0.5) {
-          topCrop = (1 - progress * 2) * 100;
-          bottomCrop = 0;
-        } else if (progress < 1) {
-          topCrop = 0;
-          bottomCrop = (progress - 0.5) * 2 * 100;
-        } else {
-          topCrop = 0;
-          bottomCrop = 100;
-        }
-
-        trackImage.style.clipPath = `inset(${topCrop}% 0 ${bottomCrop}% 0)`;
-      });
-    };
-
-    lenis.on('scroll', handleScroll);
-
-    let animationId: number;
-    const animate = () => {
-      lenis.raf(Date.now());
-      animationId = requestAnimationFrame(animate);
-    };
-
-    animationId = requestAnimationFrame(animate);
-
-    return () => {
-      if (animationId) {
-        cancelAnimationFrame(animationId);
-      }
-      lenis.destroy();
-    };
-  }, []);
+export default function Home() {
+  const updated = new Intl.DateTimeFormat("en-US", { month: "short", year: "numeric" }).format(new Date());
 
   return (
-    <div ref={mainRef} className="w-full bg-black text-white">
-      {/* Hero Section - Ben Li */}
-      <section className="h-screen flex items-center justify-center px-4 relative z-40 bg-black">
-        <div className="text-center space-y-4">
-          <h1 className="text-6xl md:text-8xl font-light tracking-tight opacity-0" data-hero-text="name">
-            Ben Li
-          </h1>
-          <p className="text-lg md:text-2xl font-light text-gray-400 opacity-0" data-hero-text="title">
-            Developer &{' '}
-            <a href={PHOTOGRAPHY_PORTFOLIO_URL} target="_blank" rel="noopener noreferrer" className="hover:text-white hover:underline">
-              Photographer
-            </a>
-          </p>
-          <div className="text-sm text-gray-500 opacity-0 pt-8" data-hero-text="info">
-            2026
+    <div className="ledger">
+      <header className="head cols">
+        <h1 className="head__name">{profile.name}</h1>
+        <p className="head__line">{profile.line}</p>
+        <Contact email={profile.email} github={profile.github} photography={profile.photography} />
+        <Strip items={strip} />
+      </header>
+
+      {sections.map((section) => (
+        <section key={section.id} id={section.id} className="section" aria-labelledby={`${section.id}-title`}>
+          <div className="opener">
+            <h2 id={`${section.id}-title`}>{section.title}</h2>
+            <span className="readout">
+              {section.entries.length} {section.entries.length === 1 ? "entry" : "entries"}
+            </span>
           </div>
-        </div>
-      </section>
+          <ol className="entries">
+            {section.entries.map((entry, i) => (
+              <li
+                key={i}
+                id={entryId(section.id, i)}
+                className={entry.figure?.wide ? "entry entry--wide cols" : "entry cols"}
+                data-entry=""
+                data-section-id={section.id}
+                data-section={section.title}
+                data-index={pad(i + 1)}
+                data-count={pad(section.entries.length)}
+              >
+                <EntryRow entry={entry} figure={figureIndex.get(entry)} />
+              </li>
+            ))}
+          </ol>
+        </section>
+      ))}
 
-      <div className="fixed-images-container">
-        <div data-track-image="1" className="track-image">
-          <Image
-            src="/photography/DSC04715-min.jpg"
-            alt="2025 photography"
-            fill
-            sizes="(max-width: 1024px) 50vw, 30vw"
-            className="w-full h-full object-cover"
-            priority
-          />
-        </div>
-        <div data-track-image="2" className="track-image">
-          <Image
-            src="/photography/DSC04760-min.jpg"
-            alt="2024 photography"
-            fill
-            sizes="(max-width: 1024px) 50vw, 30vw"
-            className="w-full h-full object-cover"
-            priority
-          />
-        </div>
-        <div data-track-image="3" className="track-image">
-          <Image
-            src="/photography/DSC04767-min.jpg"
-            alt="2023 photography"
-            fill
-            sizes="(max-width: 1024px) 50vw, 30vw"
-            className="w-full h-full object-cover"
-            priority
-          />
-        </div>
-      </div>
+      <footer className="foot">
+        <p>{profile.name}</p>
+        <p className="readout">
+          <b>{pad(entryCount)}</b> entries · updated {updated}
+        </p>
+        <a className="foot__top readout" href="#main">
+          Back to top
+        </a>
+      </footer>
 
-      <section className="text-layer h-screen flex items-center justify-center relative z-20 pt-20" data-layer="1">
-        <h2 className="text-6xl md:text-8xl font-light text-white text-center">
-          <a href={PHOTOGRAPHY_PORTFOLIO_URL} target="_blank" rel="noopener noreferrer">2025</a>
-        </h2>
-      </section>
-
-      <section className="text-layer h-screen flex items-center justify-center relative z-20 pt-20" data-layer="2">
-        <h2 className="text-6xl md:text-8xl font-light text-white text-center">
-          <a href={PHOTOGRAPHY_PORTFOLIO_URL} target="_blank" rel="noopener noreferrer">2024</a>
-        </h2>
-      </section>
-
-      <section className="text-layer h-screen flex items-center justify-center relative z-20 pt-20" data-layer="3">
-        <h2 className="text-6xl md:text-8xl font-light text-white text-center">
-          <a href={PHOTOGRAPHY_PORTFOLIO_URL} target="_blank" rel="noopener noreferrer">2023</a>
-        </h2>
-      </section>
-
-      {/* Footer */}
-      <section className="bg-black flex items-center justify-center relative z-10 py-24 md:py-32">
-        <div className="text-center space-y-8 max-w-3xl px-4 h-full flex flex-col justify-center">
-          <h2 className="text-5xl md:text-7xl font-light">Get in touch</h2>
-          <p className="text-gray-400 text-lg md:text-xl leading-relaxed">
-            If you have a project in mind, feel free to reach out. I&apos;m always eager to learn and explore new ideas.
-          </p>
-          <div className="space-y-4 pt-8">
-            <p className="text-gray-500"><a href="mailto:twislpy01@icloud.com">Email</a></p>
-            <p className="text-gray-500"><a href="https://github.com/Twis06" target="_blank" rel="noopener noreferrer">GitHub</a></p>
-          </div>
-          <p className="text-gray-600 text-sm pt-12">© 2026 Ben Li. All rights reserved.</p>
-        </div>
-      </section>
-
-      <style jsx>{`
-        .fixed-images-container {
-          position: fixed;
-          top: 50%;
-          left: 50%;
-          transform: translate(-50%, -50%);
-          width: 30vw;
-          aspect-ratio: 1/1.5;
-          max-height: 80vh;
-          z-index: 50;
-          pointer-events: none;
-        }
-
-        .track-image {
-          position: absolute;
-          width: 100%;
-          height: 100%;
-          clip-path: inset(100% 0 100% 0);
-          overflow: hidden;
-          top: 0;
-          left: 0;
-        }
-
-        .track-image img {
-          width: 100%;
-          height: 100%;
-          object-fit: cover;
-          object-position: center;
-        }
-
-        .text-layer {
-          position: relative;
-          background: transparent;
-          z-index: 70;
-        }
-
-        [data-hero-text] {
-          display: inline-block;
-          animation: fadeIn 0.8s ease-out forwards;
-        }
-
-        @keyframes fadeIn {
-          from {
-            opacity: 0;
-            transform: translateY(20px);
-          }
-          to {
-            opacity: 1;
-            transform: translateY(0);
-          }
-        }
-
-        @media (prefers-reduced-motion: reduce) {
-          [data-hero-text] {
-            animation: none;
-            opacity: 1;
-          }
-        }
-      `}</style>
+      <Reveal />
+      <Viewer figures={figures} />
     </div>
   );
-};
+}
 
-export default Home;
+function EntryRow({ entry, figure }: { entry: Entry; figure?: number }) {
+  const { when, org, meta, links, press, points } = entry;
+
+  return (
+    <>
+      <div className="entry__head">
+        <h3 className="entry__title">{entry.title}</h3>
+        {org || meta ? (
+          <p className="entry__org">
+            {typeof org === "object" ? (
+              <a href={org.href} target="_blank" rel="noopener noreferrer">
+                {org.label}
+              </a>
+            ) : (
+              org
+            )}
+            {org && meta ? " · " : null}
+            {meta ? <span className="entry__meta">{meta}</span> : null}
+          </p>
+        ) : null}
+      </div>
+
+      {when ? (
+        <p className="entry__when readout">
+          <span>{when[0]}</span>
+          {when[1] ? <span>— {when[1]}</span> : null}
+        </p>
+      ) : null}
+
+      <div className="entry__body">
+        {links ? (
+          <p className="links">
+            {links.map((link) => (
+              <a key={link.href} className="out" href={link.href} target="_blank" rel="noopener noreferrer">
+                {link.label}
+                <Arrow />
+              </a>
+            ))}
+          </p>
+        ) : null}
+        <ul className="points">
+          {points.map((point, j) => (
+            <li key={j}>{countUp(point)}</li>
+          ))}
+        </ul>
+        {press ? (
+          <p className="press">
+            <span className="readout">Press</span>
+            {press.map((link) => (
+              <a key={link.href} className="out" href={link.href} target="_blank" rel="noopener noreferrer">
+                {link.label}
+                <Arrow />
+              </a>
+            ))}
+          </p>
+        ) : null}
+      </div>
+
+      {entry.figure && figure !== undefined ? (
+        <div className="entry__figure">
+          <Figure index={figure} n={pad(figure + 1)} figure={entry.figure} />
+        </div>
+      ) : null}
+    </>
+  );
+}

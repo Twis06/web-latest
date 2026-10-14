@@ -10,6 +10,10 @@ const nextConfig: NextConfig = {
     formats: ['image/avif', 'image/webp'],
     minimumCacheTTL: 31536000,
   },
+  // The CV is the home page now; the resume PDF still links to /cv.
+  async redirects() {
+    return [{ source: '/cv', destination: '/', permanent: true }];
+  },
 };
 
 export default nextConfig;

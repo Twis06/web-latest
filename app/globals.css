@@ -1,33 +1,1218 @@
 @import "tailwindcss";
 
-@custom-variant dark (&:where([data-theme=dark], [data-theme=dark] *));
-
+/*
+  The engineering sibling of the photography archive (mediaportfolio), on a warmer paper ground,
+  set as a ledger. Shared with the photo site: hairlines, readouts, the bar, the hover tag, the
+  viewer. Its own: Mona Sans, ink-ruled section openers, a mono date column, numbered figures, and
+  one indigo for links that leave the page. Small reactions only, each answering the pointer or scroll.
+*/
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  --ground: #f5f1e9;
+  --ground-deep: #ebe5d9;
+  --ink: #1c1915;
+  --mute: #6d665c;
+  --rule: rgba(28, 25, 21, 0.11);
+  --rule-strong: rgba(28, 25, 21, 0.24);
+  --link: #434e78;
+  --link-rule: rgba(67, 78, 120, 0.32);
+
+  /*
+    Type by role: Mona Sans (GitHub's typeface), its wide cut for the name and section openers,
+    regular width for reading; Martian Mono, condensed, for readouts.
+  */
+  --face-text: var(--font-mona), "Helvetica Neue", Helvetica, Arial, sans-serif;
+  --face-mono: var(--font-martian), ui-monospace, "SFMono-Regular", Menlo, monospace;
+  --text-size: 15px;
+  --text-leading: 1.6;
+  --display-size: clamp(30px, 3.6vw, 52px);
+  --display-stretch: 125%;
+  --display-weight: 500;
+  --display-track: -0.035em;
+  --head-stretch: 112.5%;
+  --head-weight: 500;
+  --head-track: -0.025em;
+  --title-size: 16px;
+  --title-stretch: 100%;
+  --title-weight: 600;
+  --mono-size: 10.5px;
+  --mono-stretch: 87.5%;
+  --mono-track: 0.03em;
+
+  --gutter: clamp(16px, 2.2vw, 32px);
+  --bar: 64px;
+  --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+
+  color-scheme: light;
 }
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-roboto);
+html[data-theme="dark"] {
+  --ground: #13110e;
+  --ground-deep: #1c1915;
+  --ink: #eee8dd;
+  --mute: #958d80;
+  --rule: rgba(238, 232, 221, 0.1);
+  --rule-strong: rgba(238, 232, 221, 0.22);
+  --link: #9aa4dc;
+  --link-rule: rgba(154, 164, 220, 0.4);
+
+  color-scheme: dark;
 }
 
-[data-theme='dark'] {
-  --background: #0a0a0a;
-  --foreground: #ededed;
-}
+@layer base {
+  *,
+  *::before,
+  *::after {
+    box-sizing: border-box;
+  }
 
-body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: var(--font-roboto), Arial, Helvetica, sans-serif;
+  html {
+    scrollbar-width: thin;
+    scrollbar-color: var(--rule-strong) transparent;
+    -webkit-text-size-adjust: 100%;
+  }
+
+  body {
+    margin: 0;
+    min-height: 100vh;
+    background: var(--ground);
+    color: var(--ink);
+    font-family: var(--face-text);
+    font-size: var(--text-size);
+    line-height: 1.5;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    text-rendering: optimizeLegibility;
+  }
+
+  /* Selected text takes the link indigo, the page's one colour. */
+  ::selection {
+    background: var(--link);
+    color: var(--ground);
+  }
+
+  ::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+  }
+
+  ::-webkit-scrollbar-track {
+    background: transparent;
+  }
+
+  ::-webkit-scrollbar-thumb {
+    background: var(--rule-strong);
+  }
+
+  :focus-visible {
+    outline: 1px solid var(--ink);
+    outline-offset: 3px;
+  }
+
+  a {
+    color: inherit;
+    text-decoration: none;
+  }
+
+  img,
+  video,
+  iframe {
+    display: block;
+    max-width: 100%;
+  }
+
+  button {
+    font: inherit;
+    color: inherit;
+    background: none;
+    border: 0;
+    padding: 0;
+    cursor: pointer;
+  }
 }
 
 @media (prefers-reduced-motion: no-preference) {
-  *, ::before, ::after {
-    transition-property: background-color, border-color, color, fill, stroke;
-    transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
-    transition-duration: 300ms;
+  html {
+    scroll-behavior: smooth;
+  }
+}
+
+/* Readouts: measurement, never costume. Dates, counts, figure numbers, position. */
+.readout {
+  font-family: var(--face-mono);
+  font-size: var(--mono-size);
+  font-stretch: var(--mono-stretch);
+  line-height: 1;
+  letter-spacing: var(--mono-track);
+  text-transform: uppercase;
+  font-variant-numeric: tabular-nums;
+  color: var(--mute);
+  white-space: nowrap;
+}
+
+.readout b {
+  font-weight: 400;
+  color: var(--ink);
+}
+
+.arrow {
+  flex: none;
+  width: 9px;
+  height: 9px;
+}
+
+.skip {
+  position: fixed;
+  top: 12px;
+  left: var(--gutter);
+  z-index: 60;
+  padding: 8px 12px;
+  background: var(--ink);
+  color: var(--ground);
+  transform: translateY(-200%);
+}
+
+.skip:focus {
+  transform: none;
+}
+
+/* ----- Bar: the photo site's bar, with a position readout where its label strip would sit ----- */
+
+.bar {
+  position: fixed;
+  inset: 0 0 auto;
+  z-index: 40;
+  height: var(--bar);
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr) auto;
+  align-items: center;
+  column-gap: clamp(24px, 3vw, 48px);
+  padding: 0 var(--gutter);
+  background: var(--ground);
+  border-bottom: 1px solid var(--rule);
+}
+
+.bar__name {
+  font-size: 15px;
+  font-stretch: var(--head-stretch);
+  font-weight: 600;
+  letter-spacing: -0.01em;
+}
+
+.bar__where {
+  display: flex;
+  align-items: center;
+  height: 14px;
+  margin: 0;
+  overflow: hidden;
+}
+
+.bar__where span {
+  display: inline-block;
+}
+
+.bar__where .roll {
+  animation: roll-in 260ms var(--ease-out);
+}
+
+@keyframes roll-in {
+  from {
+    opacity: 0;
+    transform: translateY(55%);
+  }
+}
+
+.bar__nav {
+  grid-column: 3;
+  display: flex;
+  align-items: center;
+  gap: clamp(16px, 2vw, 28px);
+  font-size: 15px;
+}
+
+.bar__link {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  color: var(--mute);
+  transition: color 200ms ease;
+}
+
+.bar__link:hover {
+  color: var(--ink);
+}
+
+.theme-toggle {
+  display: grid;
+  place-items: center;
+  width: 28px;
+  height: 28px;
+  margin-right: -6px;
+  color: var(--mute);
+  transition: color 200ms ease;
+}
+
+.theme-toggle:hover {
+  color: var(--ink);
+}
+
+.theme-toggle svg {
+  width: 15px;
+  height: 15px;
+  transition: transform 600ms var(--ease-out);
+}
+
+html[data-theme="dark"] .theme-toggle svg {
+  transform: rotate(180deg);
+}
+
+@media (max-width: 759px) {
+  .bar__where,
+  .bar__anchor {
+    display: none;
+  }
+}
+
+
+/* ----- The ledger ----- */
+
+.ledger {
+  width: min(1600px, 100%);
+  margin: 0 auto;
+  padding: 0 var(--gutter);
+}
+
+.cols {
+  display: grid;
+  grid-template-columns: repeat(12, minmax(0, 1fr));
+  column-gap: var(--gutter);
+}
+
+.cols > * {
+  grid-column: 1 / -1;
+}
+
+/* Arrows nudge toward where they go. */
+.arrow {
+  transition: transform 300ms var(--ease-out);
+}
+
+a:hover > .arrow,
+button:hover > .arrow {
+  transform: translate(1.5px, -1.5px);
+}
+
+/* ----- Head ----- */
+
+.head {
+  padding: calc(var(--bar) + clamp(40px, 8vh, 96px)) 0 clamp(48px, 8vh, 96px);
+}
+
+/* The name answers the pointer through Mona Sans's width axis: it draws itself in a little. */
+.head__name {
+  justify-self: start;
+  margin: 0;
+  font-size: var(--display-size);
+  font-stretch: var(--display-stretch);
+  font-weight: var(--display-weight);
+  line-height: 0.96;
+  letter-spacing: var(--display-track);
+  transition: font-stretch 700ms var(--ease-out), letter-spacing 700ms var(--ease-out);
+}
+
+.head__name:hover {
+  font-stretch: 108%;
+  letter-spacing: -0.02em;
+}
+
+.head__line {
+  margin: clamp(10px, 1.6vh, 16px) 0 0;
+  font-size: clamp(16px, 1.25vw, 18px);
+  line-height: 1.35;
+  color: var(--mute);
+}
+
+/* Contact: one quiet line; email copies. */
+.contact {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 8px 24px;
+  margin: clamp(18px, 2.4vh, 26px) 0 0;
+  font-size: 15px;
+}
+
+.contact__link {
+  display: inline-flex;
+  align-items: baseline;
+  gap: 6px;
+  color: var(--ink);
+  text-decoration: underline;
+  text-decoration-color: var(--rule-strong);
+  text-underline-offset: 4px;
+  transition: text-decoration-color 200ms ease, text-underline-offset 300ms var(--ease-out);
+}
+
+.contact__link:hover {
+  text-decoration-color: var(--ink);
+  text-underline-offset: 6px;
+}
+
+.contact__link .arrow {
+  align-self: center;
+}
+
+.contact__note {
+  opacity: 0;
+  transform: translateY(2px);
+  transition: opacity 200ms ease, transform 260ms var(--ease-out);
+}
+
+.contact__link:hover .contact__note,
+.contact__link:focus-visible .contact__note,
+.contact__link[data-copied] .contact__note {
+  opacity: 1;
+  transform: none;
+}
+
+.contact__link[data-copied] .contact__note {
+  color: var(--link);
+}
+
+@media (min-width: 1100px) {
+  .head__name,
+  .head__line,
+  .contact {
+    grid-column: 1 / span 8;
+  }
+}
+
+/* ----- The strip: every figure as one row of frames, like a contact sheet ----- */
+
+.strip {
+  margin-top: clamp(28px, 4.5vh, 44px);
+}
+
+.strip__frames {
+  display: grid;
+  grid-auto-flow: column;
+  grid-auto-columns: minmax(124px, 1fr);
+  gap: 6px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  overflow-x: auto;
+  scrollbar-width: none;
+}
+
+.strip__frames::-webkit-scrollbar {
+  display: none;
+}
+
+.strip__frame {
+  position: relative;
+  display: block;
+  width: 100%;
+  aspect-ratio: 16 / 10;
+  overflow: hidden;
+  background: var(--ground-deep);
+}
+
+/* At rest the frames are grey; the one pointed at comes up in colour, as focus does on the photo site. */
+.strip__frame img,
+.strip__frame video {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  filter: grayscale(1) contrast(0.92);
+  opacity: 0.72;
+  transition: filter 500ms var(--ease-out), opacity 500ms var(--ease-out), transform 900ms var(--ease-out);
+}
+
+.strip__frame video {
+  opacity: 0;
+}
+
+.strip__frame[data-active] img,
+.strip__frame[data-active] video {
+  filter: none;
+  opacity: 1;
+  transform: scale(1.04);
+}
+
+.strip__frames:has([data-active]) .strip__frame:not([data-active]) img {
+  opacity: 0.45;
+}
+
+.strip__n {
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  padding: 4px 6px;
+  background: var(--ground);
+  color: var(--mute);
+  transition: color 200ms ease;
+}
+
+.strip__frame[data-active] .strip__n {
+  color: var(--ink);
+}
+
+.strip__label {
+  display: flex;
+  align-items: center;
+  height: 14px;
+  margin: 10px 0 0;
+  overflow: hidden;
+}
+
+.strip__label span {
+  display: inline-block;
+  animation: roll-in 260ms var(--ease-out);
+}
+
+/* The entry the strip jumped to glows once, then settles. */
+.entry {
+  scroll-margin-top: calc(var(--bar) + 24px);
+}
+
+.entry[data-flash] {
+  animation: flash 1600ms var(--ease-out);
+}
+
+@keyframes flash {
+  0%,
+  30% {
+    background: var(--ground-deep);
+  }
+  100% {
+    background: transparent;
+  }
+}
+
+/* ----- Section openers: ruled in full ink, drawn in as they arrive ----- */
+
+.section {
+  scroll-margin-top: var(--bar);
+}
+
+.section + .section {
+  margin-top: clamp(80px, 12vh, 144px);
+}
+
+.opener {
+  position: relative;
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 14px 0 clamp(12px, 2vh, 20px);
+  border-top: 1px solid var(--ink);
+  border-bottom: 1px solid var(--rule);
+}
+
+.opener[data-draw] {
+  border-top-color: transparent;
+}
+
+.opener[data-draw]::before {
+  content: "";
+  position: absolute;
+  top: -1px;
+  left: 0;
+  right: 0;
+  height: 1px;
+  background: var(--ink);
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform 1100ms var(--ease-out);
+}
+
+.opener[data-draw="done"]::before {
+  transform: scaleX(1);
+}
+
+.opener h2 {
+  margin: 0;
+  font-size: clamp(21px, 1.8vw, 26px);
+  font-stretch: var(--head-stretch);
+  font-weight: var(--head-weight);
+  line-height: 1.05;
+  letter-spacing: var(--head-track);
+}
+
+.entries {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+/* ----- Entries: when on the left, what in the middle, the evidence on the right ----- */
+
+.entry {
+  padding: clamp(24px, 3.4vh, 36px) 0;
+  border-bottom: 1px solid var(--rule);
+}
+
+.entry__when {
+  grid-row: 2;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0 0.7em;
+  margin: 12px 0 0;
+  transition: color 300ms ease;
+}
+
+/* The entry being read, or pointed at, lights its dates. */
+.entry[data-current] .entry__when,
+.entry:hover .entry__when {
+  color: var(--ink);
+}
+
+.entry__head {
+  grid-row: 1;
+}
+
+.entry__title {
+  margin: 0;
+  font-size: var(--title-size);
+  font-weight: var(--title-weight);
+  line-height: 1.35;
+  letter-spacing: -0.01em;
+  text-wrap: balance;
+}
+
+.entry__org {
+  margin: 4px 0 0;
+}
+
+.entry__meta {
+  color: var(--mute);
+}
+
+.entry__body {
+  grid-row: 3;
+  margin-top: 16px;
+}
+
+.entry__figure {
+  grid-row: 4;
+  margin-top: 24px;
+}
+
+@media (min-width: 768px) {
+  .entry__when {
+    grid-column: 1 / span 3;
+    grid-row: 1;
+    display: grid;
+    align-content: start;
+    gap: 7px;
+    margin: 0;
+    padding-top: 5px;
+  }
+
+  .entry__head,
+  .entry__body,
+  .entry__figure {
+    grid-column: 4 / -1;
+  }
+
+  .entry__figure {
+    max-width: 600px;
+  }
+
+  .entry--wide .entry__figure {
+    max-width: 640px;
+  }
+}
+
+@media (min-width: 1100px) {
+  .entry {
+    grid-template-rows: auto 1fr;
+  }
+
+  .entry__when {
+    grid-column: 1 / span 2;
+    grid-row: 1 / span 2;
+  }
+
+  .entry__head,
+  .entry__body {
+    grid-column: 3 / span 5;
+  }
+
+  .entry__body {
+    grid-row: 2;
+  }
+
+  .entry__figure {
+    grid-column: 9 / span 4;
+    grid-row: 1 / span 2;
+    max-width: none;
+    margin-top: 4px;
+  }
+
+  /* Footage with small detail runs under the entry, across the text and figure columns. */
+  .entry--wide .entry__figure {
+    grid-column: 3 / -1;
+    grid-row: 3;
+    max-width: 760px;
+    margin-top: 28px;
+  }
+}
+
+/* ----- Links: the one place the ledger takes a colour ----- */
+
+.links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px 20px;
+  margin: 0 0 16px;
+  font-size: 14px;
+}
+
+.out {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  color: var(--link);
+  text-decoration: underline;
+  text-decoration-color: transparent;
+  text-underline-offset: 3px;
+  transition: text-decoration-color 200ms ease;
+}
+
+.out:hover {
+  text-decoration-color: var(--link-rule);
+}
+
+.entry__org a,
+.points a {
+  color: var(--link);
+  text-decoration: underline;
+  text-decoration-color: var(--link-rule);
+  text-underline-offset: 3px;
+  transition: text-decoration-color 200ms ease;
+}
+
+.entry__org a:hover,
+.points a:hover {
+  text-decoration-color: var(--link);
+}
+
+.points {
+  display: grid;
+  gap: 10px;
+  max-width: 68ch;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.points li {
+  position: relative;
+  padding-left: 20px;
+  line-height: var(--text-leading);
+}
+
+/* Bullet ticks stretch a little when the entry is pointed at. */
+.points li::before {
+  content: "";
+  position: absolute;
+  top: 0.8em;
+  left: 0;
+  width: 8px;
+  height: 1px;
+  background: var(--mute);
+  transition: width 420ms var(--ease-out), background-color 300ms ease;
+}
+
+.entry:hover .points li::before {
+  width: 12px;
+  background: var(--ink);
+}
+
+.press {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 6px 18px;
+  margin: 18px 0 0;
+  font-size: 14px;
+}
+
+/* ----- Figures: numbered, captioned; press to view large ----- */
+
+.figure {
+  margin: 0;
+}
+
+.figure__media {
+  position: relative;
+  display: block;
+  width: 100%;
+  overflow: hidden;
+  background: var(--ground-deep);
+  cursor: zoom-in;
+}
+
+/* A portrait clip keeps its own width; its caption still runs the full column. */
+.figure--portrait .figure__media {
+  max-width: 320px;
+}
+
+.figure__media img,
+.figure__media video {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 900ms var(--ease-out), opacity 500ms ease;
+}
+
+.figure__media video {
+  opacity: 0;
+}
+
+.figure__media video[data-live] {
+  opacity: 1;
+}
+
+.figure__media:hover img,
+.figure__media:hover video {
+  transform: scale(1.015);
+}
+
+.figure__grid {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  grid-template-rows: 1fr 1fr;
+  gap: 1px;
+  background: var(--ground);
+}
+
+.figure__cell {
+  position: relative;
+  overflow: hidden;
+  background: var(--ground-deep);
+}
+
+/* The photo site's hover tag: slides down from the top edge. */
+.figure__tag {
+  position: absolute;
+  top: 0;
+  left: 0;
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  padding: 7px 9px;
+  background: var(--ground);
+  color: var(--ink);
+  opacity: 0;
+  transform: translateY(-100%);
+  transition: opacity 260ms var(--ease-out), transform 420ms var(--ease-out);
+}
+
+.figure__tag svg {
+  width: 7px;
+  height: 8px;
+}
+
+.figure__media:hover .figure__tag,
+.figure__media:focus-visible .figure__tag {
+  opacity: 1;
+  transform: none;
+}
+
+@media (hover: none) {
+  .figure__tag {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+.figure__media:focus-visible {
+  outline-offset: -3px;
+  outline-color: var(--ground);
+}
+
+.figure__cap {
+  display: flex;
+  align-items: baseline;
+  gap: 12px;
+  padding-top: 10px;
+  font-size: 13px;
+  line-height: 1.4;
+  color: var(--mute);
+}
+
+.figure__cap .readout {
+  flex: none;
+}
+
+.figure__ctl {
+  flex: none;
+  margin-left: auto;
+  padding: 4px 0 4px 8px;
+  transition: color 200ms ease;
+}
+
+.figure__ctl:hover {
+  color: var(--ink);
+}
+
+/* Readouts over the footage: facts from the entry, staggered up on hover. */
+.hud {
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  display: grid;
+  justify-items: start;
+  gap: 3px;
+  padding: 0 0 10px 10px;
+  pointer-events: none;
+}
+
+.hud__line {
+  padding: 5px 7px;
+  background: var(--ground);
+  color: var(--ink);
+  opacity: 0;
+  transform: translateY(6px);
+  transition: opacity 260ms var(--ease-out), transform 420ms var(--ease-out);
+}
+
+.figure__media:hover .hud__line,
+.figure__media:focus-visible .hud__line {
+  opacity: 1;
+  transform: none;
+}
+
+.figure__media[data-scrubbing] .hud__line {
+  opacity: 0.85;
+}
+
+/* The scrub bar: a hairline along the bottom edge that follows the pointer while scrubbing. */
+.figure__scrub {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 2px;
+  background: color-mix(in srgb, var(--ground) 55%, transparent);
+  opacity: 0;
+  transition: opacity 200ms ease;
+}
+
+.figure__scrub > span {
+  position: absolute;
+  inset: 0;
+  background: var(--link);
+  transform: scaleX(0);
+  transform-origin: left;
+}
+
+.figure__media[data-scrubbing] .figure__scrub {
+  opacity: 1;
+}
+
+.figure__media[data-scrubbing] {
+  cursor: ew-resize;
+}
+
+/* Measured figures count up once; tabular so the digits never jostle. */
+.num {
+  display: inline-block;
+  font-variant-numeric: tabular-nums;
+  text-align: right;
+}
+
+/* ----- Flight tests: frame tilt × takeoff point ----- */
+
+.flight__controls {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px 28px;
+  margin-bottom: 12px;
+}
+
+.flight__group {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 6px;
+}
+
+.flight__group > .readout {
+  margin-right: 6px;
+}
+
+.flight__chip,
+.flight__point {
+  min-width: 30px;
+  padding: 5px 9px;
+  border: 1px solid var(--rule-strong);
+  font-size: 13px;
+  font-variant-numeric: tabular-nums;
+  color: var(--mute);
+  transition: color 200ms ease, background-color 200ms ease, border-color 200ms ease, transform 300ms var(--ease-out);
+}
+
+.flight__point {
+  min-width: 28px;
+  padding: 4px 0;
+}
+
+.flight__chip:hover,
+.flight__point:hover:not(:disabled) {
+  color: var(--ink);
+  border-color: var(--ink);
+  transform: translateY(-1px);
+}
+
+.flight__chip[aria-pressed="true"],
+.flight__point[aria-pressed="true"] {
+  color: var(--ground);
+  background: var(--ink);
+  border-color: var(--ink);
+}
+
+.flight__point:disabled {
+  border-style: dashed;
+  border-color: var(--rule);
+  color: var(--rule-strong);
+  cursor: not-allowed;
+}
+
+.flight__glyph {
+  width: 64px;
+  height: 30px;
+  margin-left: 6px;
+  overflow: visible;
+}
+
+.flight__ground {
+  stroke: var(--rule-strong);
+  stroke-width: 1;
+}
+
+.flight__path {
+  fill: none;
+  stroke: var(--link);
+  stroke-width: 1;
+  stroke-dasharray: 2 3;
+}
+
+.flight__frame {
+  stroke: #c0392b;
+  stroke-width: 3;
+  stroke-linecap: round;
+  transition: all 600ms var(--ease-out);
+}
+
+.flight__stage video {
+  opacity: 1;
+}
+
+/* ----- Viewer: the photography site's, carried over ----- */
+
+.viewer {
+  position: fixed;
+  inset: 0;
+  z-index: 60;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 280px;
+  background: var(--ground);
+  opacity: 0;
+  transition: opacity 360ms var(--ease-out);
+}
+
+.viewer[data-state="open"] {
+  opacity: 1;
+}
+
+.viewer__stage {
+  display: grid;
+  place-items: center;
+  min-width: 0;
+  min-height: 0;
+  padding: clamp(24px, 4vw, 64px);
+  cursor: zoom-out;
+}
+
+.viewer__media {
+  display: grid;
+  place-items: center;
+  width: 100%;
+  height: 100%;
+  cursor: default;
+  transform: scale(0.97);
+  transition: transform 760ms var(--ease-out);
+}
+
+.viewer[data-state="open"] .viewer__media {
+  transform: none;
+}
+
+.viewer__clip,
+.viewer__frame,
+.viewer__grid {
+  max-width: 100%;
+  max-height: 100%;
+  width: 100%;
+  height: auto;
+  border: 0;
+  background: var(--ground-deep);
+}
+
+.viewer__clip {
+  width: auto;
+  height: 100%;
+  object-fit: contain;
+  background: transparent;
+}
+
+.viewer__grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 2px;
+  width: min(100%, calc((100vh - 128px) * 16 / 9));
+  background: var(--ground);
+}
+
+.viewer__grid video {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.viewer__side {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  padding: calc(var(--gutter) + 8px) var(--gutter) var(--gutter);
+  border-left: 1px solid var(--rule);
+}
+
+.viewer__meta {
+  display: grid;
+  gap: 18px;
+  margin: 0;
+}
+
+.viewer__meta div {
+  display: grid;
+  gap: 6px;
+}
+
+.viewer__meta dd {
+  margin: 0;
+  font-size: 14px;
+}
+
+.viewer__controls {
+  display: flex;
+  gap: 18px;
+}
+
+.viewer__controls button {
+  padding: 6px 0;
+  color: var(--mute);
+  transition: color 200ms ease;
+}
+
+.viewer__controls button:hover {
+  color: var(--ink);
+}
+
+@media (max-width: 767px) {
+  .viewer {
+    grid-template-columns: 1fr;
+    grid-template-rows: minmax(0, 1fr) auto;
+  }
+
+  .viewer__stage {
+    padding: 12px;
+  }
+
+  .viewer__clip {
+    width: 100%;
+    height: auto;
+  }
+
+  .viewer__side {
+    flex-direction: row;
+    align-items: flex-end;
+    gap: 16px;
+    padding: 14px var(--gutter) calc(14px + env(safe-area-inset-bottom));
+    border-left: 0;
+    border-top: 1px solid var(--rule);
+  }
+
+  .viewer__meta div:nth-child(n + 3) {
+    display: none;
+  }
+}
+
+/* ----- Foot: the ledger closes on an ink rule ----- */
+
+.foot {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 12px 24px;
+  margin-top: clamp(96px, 14vh, 176px);
+  padding: 16px 0 calc(var(--gutter) + 24px);
+  border-top: 1px solid var(--ink);
+}
+
+.foot p {
+  margin: 0;
+}
+
+.foot__top {
+  transition: color 200ms ease;
+}
+
+.foot__top::after {
+  content: "";
+  display: inline-block;
+  width: 5px;
+  height: 5px;
+  margin-left: 7px;
+  border-top: 1px solid currentColor;
+  border-left: 1px solid currentColor;
+  transform: translateY(1px) rotate(45deg);
+  transition: transform 300ms var(--ease-out);
+}
+
+.foot__top:hover {
+  color: var(--ink);
+}
+
+.foot__top:hover::after {
+  transform: translateY(-2px) rotate(45deg);
+}
+
+/* The theme switch's circle reveal draws the new page over the old one, unfaded. */
+::view-transition-old(root),
+::view-transition-new(root) {
+  animation: none;
+  mix-blend-mode: normal;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    transition-duration: 1ms !important;
+    animation-duration: 1ms !important;
   }
 }

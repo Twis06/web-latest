@@ -1,0 +1,139 @@
+{
+  "schemaVersion": 2,
+  "generatedAt": "2026-10-14T18:03:00Z",
+  "title": "Design System: Ben Li",
+  "extensions": {
+    "colorMeta": {
+      "link": { "role": "primary", "displayName": "Annotation Indigo", "canonical": "#434e78", "tonalRamp": ["#1a1f33", "#2b3352", "#434e78", "#5c6794", "#7782ad", "#949dc4", "#b6bcd9", "#dcdfee"] },
+      "link-rule": { "role": "primary", "displayName": "Indigo Rule", "canonical": "rgba(67, 78, 120, 0.32)" },
+      "link-night": { "role": "primary", "displayName": "Annotation Indigo (night)", "canonical": "#9aa4dc", "tonalRamp": ["#262b47", "#3a416b", "#525b8f", "#6c76b1", "#848ec9", "#9aa4dc", "#bcc2e8", "#e0e3f5"] },
+      "link-rule-night": { "role": "primary", "displayName": "Indigo Rule (night)", "canonical": "rgba(154, 164, 220, 0.4)" },
+      "ground": { "role": "neutral", "displayName": "Fog Ground", "canonical": "#f3f3f1", "tonalRamp": ["#262625", "#3f3f3d", "#5b5b59", "#7a7a77", "#9b9b98", "#bdbdba", "#dcdcd9", "#f3f3f1"] },
+      "ground-deep": { "role": "neutral", "displayName": "Deep Fog", "canonical": "#e9e9e6" },
+      "ink": { "role": "neutral", "displayName": "Ink", "canonical": "#121212", "tonalRamp": ["#121212", "#2a2a2a", "#444444", "#5f5f5f", "#7c7c7c", "#9b9b9b", "#c4c4c4", "#ededed"] },
+      "mute": { "role": "neutral", "displayName": "Mute", "canonical": "#6f6f6c" },
+      "rule": { "role": "neutral", "displayName": "Hairline", "canonical": "rgba(18, 18, 18, 0.1)" },
+      "rule-strong": { "role": "neutral", "displayName": "Hairline Strong", "canonical": "rgba(18, 18, 18, 0.22)" },
+      "ground-night": { "role": "neutral", "displayName": "Fog Ground (night)", "canonical": "#0d0d0d" },
+      "ground-deep-night": { "role": "neutral", "displayName": "Deep Fog (night)", "canonical": "#151515" },
+      "ink-night": { "role": "neutral", "displayName": "Ink (night)", "canonical": "#ededea" },
+      "mute-night": { "role": "neutral", "displayName": "Mute (night)", "canonical": "#8f8f8b" },
+      "rule-night": { "role": "neutral", "displayName": "Hairline (night)", "canonical": "rgba(237, 237, 234, 0.1)" },
+      "rule-strong-night": { "role": "neutral", "displayName": "Hairline Strong (night)", "canonical": "rgba(237, 237, 234, 0.22)" }
+    },
+    "typographyMeta": {
+      "display": { "displayName": "Display", "purpose": "The one h1, the name." },
+      "lede": { "displayName": "Lede", "purpose": "The line under the name, in mute." },
+      "headline": { "displayName": "Headline", "purpose": "Section opener titles on the full-ink rule." },
+      "title": { "displayName": "Title", "purpose": "Entry titles." },
+      "bar-name": { "displayName": "Bar Name", "purpose": "The site name in the bar." },
+      "body": { "displayName": "Body", "purpose": "Organisation lines, nav, contact rows; bullet points at 1.6 line-height, max 68ch." },
+      "link-row": { "displayName": "Link Row", "purpose": "Rows of outbound and press links." },
+      "caption": { "displayName": "Caption", "purpose": "Figure captions, mute." },
+      "readout": { "displayName": "Readout", "purpose": "Mono, uppercase, tabular: dates, counts, FIG. numbers, bar position, field labels, media controls." }
+    },
+    "shadows": [],
+    "motion": [
+      { "name": "ease-out", "value": "cubic-bezier(0.16, 1, 0.3, 1)", "purpose": "The one curve for spatial moves: readout roll, row indent, image scale, theme glyph turn. Shared with the photography site." },
+      { "name": "color-change", "value": "200ms ease", "purpose": "Link, control and date-column colour changes." },
+      { "name": "roll-in", "value": "260ms cubic-bezier(0.16, 1, 0.3, 1), from translateY(55%) and opacity 0", "purpose": "Bar position readout, only when the entry changes." },
+      { "name": "row-indent", "value": "padding-left 10px, 400ms cubic-bezier(0.16, 1, 0.3, 1)", "purpose": "Contact row hover." },
+      { "name": "image-scale", "value": "scale(1.015), 900ms cubic-bezier(0.16, 1, 0.3, 1)", "purpose": "YouTube poster hover." },
+      { "name": "theme-turn", "value": "rotate(180deg), 600ms cubic-bezier(0.16, 1, 0.3, 1)", "purpose": "Theme glyph at night." },
+      { "name": "reduced-motion", "value": "transition and animation 1ms; smooth scroll off; clips start paused", "purpose": "prefers-reduced-motion: reduce." }
+    ],
+    "breakpoints": [
+      { "name": "bar-compact", "value": "759px", "purpose": "At or below: position readout and in-page anchors hide." },
+      { "name": "entry-columns", "value": "768px", "purpose": "Dates move to their own column (1-3), figure capped at 600px." },
+      { "name": "ledger", "value": "1100px", "purpose": "Full ledger: dates 1-2, text 3-7, figure 9-12; head contact rows take columns 9-12." }
+    ]
+  },
+  "components": [
+    {
+      "name": "Bar",
+      "kind": "nav",
+      "refersTo": "bar",
+      "description": "Fixed 64px bar: name, scroll-driven position readout, nav and the half-disc theme toggle.",
+      "html": "<header class=\"ds-bar\"><a class=\"ds-bar-name\" href=\"#\">Ben Li</a><p class=\"ds-readout ds-bar-where\">Experience&ensp;<b>02</b> / 03</p><nav class=\"ds-bar-nav\"><a class=\"ds-bar-link\" href=\"#\">Experience</a><a class=\"ds-bar-link\" href=\"#\">Projects</a><a class=\"ds-bar-link\" href=\"#\">Photography <svg width=\"9\" height=\"9\" viewBox=\"0 0 10 10\" aria-hidden=\"true\"><path d=\"M2.5 7.5 7.5 2.5M3.5 2.5h4v4\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.1\"/></svg></a><button class=\"ds-toggle\" type=\"button\" aria-label=\"Switch light or dark\"><svg width=\"15\" height=\"15\" viewBox=\"0 0 16 16\" aria-hidden=\"true\"><circle cx=\"8\" cy=\"8\" r=\"6.4\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.2\"/><path d=\"M8 1.6a6.4 6.4 0 0 1 0 12.8Z\" fill=\"currentColor\"/></svg></button></nav></header>",
+      "css": ".ds-bar { height: 64px; display: grid; grid-template-columns: auto minmax(0, 1fr) auto; align-items: center; column-gap: clamp(24px, 3vw, 48px); padding: 0 clamp(16px, 2.2vw, 32px); background: var(--ground, #f3f3f1); color: var(--ink, #121212); border-bottom: 1px solid var(--rule, rgba(18,18,18,0.1)); font-family: var(--face-text, 'Mona Sans', 'Helvetica Neue', Arial, sans-serif); } .ds-bar-name { font-size: 15px; font-stretch: 112.5%; font-weight: 600; letter-spacing: -0.01em; color: inherit; text-decoration: none; } .ds-bar-where { margin: 0; } .ds-readout { font-family: var(--face-mono, 'Martian Mono', ui-monospace, Menlo, monospace); font-size: 10.5px; font-stretch: 87.5%; line-height: 1; letter-spacing: 0.03em; text-transform: uppercase; font-variant-numeric: tabular-nums; color: var(--mute, #6f6f6c); white-space: nowrap; } .ds-readout b { font-weight: 400; color: var(--ink, #121212); } .ds-bar-nav { display: flex; align-items: center; gap: clamp(16px, 2vw, 28px); font-size: 15px; } .ds-bar-link { display: inline-flex; align-items: center; gap: 5px; color: var(--mute, #6f6f6c); text-decoration: none; transition: color 200ms ease; } .ds-bar-link:hover { color: var(--ink, #121212); } .ds-bar-link:focus-visible, .ds-toggle:focus-visible { outline: 1px solid var(--ink, #121212); outline-offset: 3px; } .ds-toggle { display: grid; place-items: center; width: 28px; height: 28px; border: 0; padding: 0; background: none; color: var(--mute, #6f6f6c); cursor: pointer; transition: color 200ms ease; } .ds-toggle:hover { color: var(--ink, #121212); } .ds-toggle svg { transition: transform 600ms cubic-bezier(0.16, 1, 0.3, 1); }"
+    },
+    {
+      "name": "Contact Row",
+      "kind": "custom",
+      "refersTo": "row",
+      "description": "Hairline-ruled row: readout label left, value right, arrow when it leaves the site; indents on hover.",
+      "html": "<ul class=\"ds-rows\"><li><a class=\"ds-row\" href=\"#\"><span class=\"ds-readout\">GitHub</span><span class=\"ds-row-value\">github.com/Twis06 <svg width=\"9\" height=\"9\" viewBox=\"0 0 10 10\" aria-hidden=\"true\"><path d=\"M2.5 7.5 7.5 2.5M3.5 2.5h4v4\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.1\"/></svg></span></a></li></ul>",
+      "css": ".ds-rows { list-style: none; margin: 0; padding: 0; max-width: 560px; border-top: 1px solid var(--rule, rgba(18,18,18,0.1)); font-family: var(--face-text, 'Mona Sans', 'Helvetica Neue', Arial, sans-serif); font-size: 15px; } .ds-row { display: grid; grid-template-columns: auto minmax(0, 1fr); align-items: baseline; gap: 16px; padding: 14px 0; border-bottom: 1px solid var(--rule, rgba(18,18,18,0.1)); color: var(--ink, #121212); text-decoration: none; transition: padding 400ms cubic-bezier(0.16, 1, 0.3, 1); } .ds-row:hover { padding-left: 10px; } .ds-row:focus-visible { outline: 1px solid var(--ink, #121212); outline-offset: 3px; } .ds-row-value { justify-self: end; display: inline-flex; align-items: center; gap: 6px; } .ds-readout { font-family: var(--face-mono, 'Martian Mono', ui-monospace, Menlo, monospace); font-size: 10.5px; font-stretch: 87.5%; line-height: 1; letter-spacing: 0.03em; text-transform: uppercase; font-variant-numeric: tabular-nums; color: var(--mute, #6f6f6c); }"
+    },
+    {
+      "name": "Section Opener",
+      "kind": "custom",
+      "refersTo": "opener",
+      "description": "Full-ink rule, headline title and an entry-count readout on one baseline, closed by a hairline.",
+      "html": "<div class=\"ds-opener\"><h2>Experience</h2><span class=\"ds-readout\">3 entries</span></div>",
+      "css": ".ds-opener { display: flex; align-items: baseline; justify-content: space-between; gap: 16px; padding: 14px 0 clamp(12px, 2vh, 20px); border-top: 1px solid var(--ink, #121212); border-bottom: 1px solid var(--rule, rgba(18,18,18,0.1)); font-family: var(--face-text, 'Mona Sans', 'Helvetica Neue', Arial, sans-serif); color: var(--ink, #121212); } .ds-opener h2 { margin: 0; font-size: clamp(26px, 2.6vw, 38px); font-stretch: 112.5%; font-weight: 500; line-height: 1.05; letter-spacing: -0.025em; } .ds-readout { font-family: var(--face-mono, 'Martian Mono', ui-monospace, Menlo, monospace); font-size: 10.5px; font-stretch: 87.5%; line-height: 1; letter-spacing: 0.03em; text-transform: uppercase; font-variant-numeric: tabular-nums; color: var(--mute, #6f6f6c); }"
+    },
+    {
+      "name": "Ledger Entry",
+      "kind": "card",
+      "refersTo": "entry",
+      "description": "One ruled line: mono dates left (ink when current), title, organisation link, outbound links and dashed points.",
+      "html": "<article class=\"ds-entry\" data-current><p class=\"ds-readout ds-when\"><span>Sep 2025</span><span>— Jan 2026</span></p><div><h3 class=\"ds-entry-title\">Robotics Engineer</h3><p class=\"ds-entry-org\"><a href=\"#\">HaptE</a> · <span class=\"ds-meta\">Evanston, IL</span></p><ul class=\"ds-points\"><li>Built a fully local inference pipeline on Nvidia Jetson, under 20ms per frame.</li><li>Trained a recognition system achieving 98%+ item accuracy.</li></ul></div></article>",
+      "css": ".ds-entry { display: grid; grid-template-columns: 2fr 5fr; column-gap: clamp(16px, 2.2vw, 32px); padding: clamp(24px, 3.4vh, 36px) 0; border-bottom: 1px solid var(--rule, rgba(18,18,18,0.1)); font-family: var(--face-text, 'Mona Sans', 'Helvetica Neue', Arial, sans-serif); font-size: 15px; line-height: 1.5; color: var(--ink, #121212); } .ds-readout { font-family: var(--face-mono, 'Martian Mono', ui-monospace, Menlo, monospace); font-size: 10.5px; font-stretch: 87.5%; line-height: 1; letter-spacing: 0.03em; text-transform: uppercase; font-variant-numeric: tabular-nums; color: var(--mute, #6f6f6c); white-space: nowrap; } .ds-when { display: grid; align-content: start; gap: 7px; margin: 0; padding-top: 5px; transition: color 200ms ease; } .ds-entry[data-current] .ds-when { color: var(--ink, #121212); } .ds-entry-title { margin: 0; font-size: 17px; font-weight: 600; line-height: 1.35; letter-spacing: -0.01em; } .ds-entry-org { margin: 4px 0 16px; } .ds-entry-org a { color: var(--link, #434e78); text-decoration: underline; text-decoration-color: var(--link-rule, rgba(67,78,120,0.32)); text-underline-offset: 3px; transition: text-decoration-color 200ms ease; } .ds-entry-org a:hover { text-decoration-color: var(--link, #434e78); } .ds-meta { color: var(--mute, #6f6f6c); } .ds-points { display: grid; gap: 10px; max-width: 68ch; margin: 0; padding: 0; list-style: none; } .ds-points li { position: relative; padding-left: 20px; line-height: 1.6; } .ds-points li::before { content: ''; position: absolute; top: 0.8em; left: 0; width: 8px; height: 1px; background: var(--mute, #6f6f6c); }"
+    },
+    {
+      "name": "Outbound Links",
+      "kind": "chip",
+      "refersTo": "link-out",
+      "description": "Indigo links that leave the page, with the arrow; underline appears on hover. Press rows lead with a readout label.",
+      "html": "<p class=\"ds-links\"><span class=\"ds-readout\">Press</span><a class=\"ds-out\" href=\"#\">Reuters <svg width=\"9\" height=\"9\" viewBox=\"0 0 10 10\" aria-hidden=\"true\"><path d=\"M2.5 7.5 7.5 2.5M3.5 2.5h4v4\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.1\"/></svg></a><a class=\"ds-out\" href=\"#\">BBC <svg width=\"9\" height=\"9\" viewBox=\"0 0 10 10\" aria-hidden=\"true\"><path d=\"M2.5 7.5 7.5 2.5M3.5 2.5h4v4\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.1\"/></svg></a></p>",
+      "css": ".ds-links { display: flex; flex-wrap: wrap; align-items: baseline; gap: 6px 18px; margin: 0; font-family: var(--face-text, 'Mona Sans', 'Helvetica Neue', Arial, sans-serif); font-size: 14px; } .ds-readout { font-family: var(--face-mono, 'Martian Mono', ui-monospace, Menlo, monospace); font-size: 10.5px; font-stretch: 87.5%; line-height: 1; letter-spacing: 0.03em; text-transform: uppercase; color: var(--mute, #6f6f6c); } .ds-out { display: inline-flex; align-items: center; gap: 5px; color: var(--link, #434e78); text-decoration: underline; text-decoration-color: transparent; text-underline-offset: 3px; transition: text-decoration-color 200ms ease; } .ds-out:hover { text-decoration-color: var(--link-rule, rgba(67,78,120,0.32)); } .ds-out:focus-visible { outline: 1px solid var(--ink, #121212); outline-offset: 3px; }"
+    },
+    {
+      "name": "Figure",
+      "kind": "custom",
+      "refersTo": "figure-media",
+      "description": "Numbered, captioned media on deep fog, square, never full-bleed; Play tag on YouTube posters and a Play / Pause / YouTube control in the caption.",
+      "html": "<figure class=\"ds-figure\"><button class=\"ds-figure-media\" type=\"button\" aria-label=\"Play video\"><span class=\"ds-tag ds-readout\"><svg width=\"7\" height=\"8\" viewBox=\"0 0 7 8\" aria-hidden=\"true\"><path d=\"M0 0 7 4 0 8Z\" fill=\"currentColor\"/></svg>Play</span></button><figcaption class=\"ds-cap\"><span class=\"ds-readout\">Fig. <b>01</b></span><span>Reconfigurable legged machines in the wild</span><a class=\"ds-readout ds-ctl\" href=\"#\">YouTube</a></figcaption></figure>",
+      "css": ".ds-figure { margin: 0; max-width: 440px; font-family: var(--face-text, 'Mona Sans', 'Helvetica Neue', Arial, sans-serif); } .ds-figure-media { position: relative; display: block; width: 100%; aspect-ratio: 16 / 9; border: 0; padding: 0; background: var(--ground-deep, #e9e9e6); cursor: pointer; overflow: hidden; } .ds-figure-media:focus-visible { outline: 1px solid var(--ground, #f3f3f1); outline-offset: -3px; } .ds-tag { position: absolute; top: 0; left: 0; display: inline-flex; align-items: center; gap: 7px; padding: 8px 10px; background: var(--ground, #f3f3f1); color: var(--ink, #121212) !important; } .ds-readout { font-family: var(--face-mono, 'Martian Mono', ui-monospace, Menlo, monospace); font-size: 10.5px; font-stretch: 87.5%; line-height: 1; letter-spacing: 0.03em; text-transform: uppercase; font-variant-numeric: tabular-nums; color: var(--mute, #6f6f6c); white-space: nowrap; } .ds-readout b { font-weight: 400; color: var(--ink, #121212); } .ds-cap { display: flex; align-items: baseline; gap: 12px; padding-top: 10px; font-size: 13px; line-height: 1.4; color: var(--mute, #6f6f6c); } .ds-ctl { margin-left: auto; padding: 4px 0 4px 8px; text-decoration: none; transition: color 200ms ease; } .ds-ctl:hover { color: var(--ink, #121212); }"
+    }
+  ],
+  "narrative": {
+    "northStar": "The Lab Ledger",
+    "overview": "The CV is a bound lab record. Every entry is one ruled line: when on the left, what in the middle, the evidence pinned on the right. The material is the photography archive's (fog ground, ink, 10% hairlines, a 64px bar, square corners), so moving between the two sites never jars. The details are the ledger's own: its type (Mona Sans, with its wide cut for the name and openers, and Martian Mono), section openers ruled in full ink, a fixed mono date column, numbered figures with captions, and one indigo kept for links that leave the page.\n\nDensity is moderate and the voice is factual. The page shows a name at display scale, three contact rows, then three ruled sections of entries with bullet points, outbound links and moving proof beside them. Depth is absent; separation is a hairline or an ink rule. Scroll is the only clock: it names the entry being read in the bar and turns that entry's dates from mute to ink.\n\nThe ledger turns down the stacked card timeline with a coloured left border and the autoplaying wall of video. There is no WebGL, no full-bleed media, no shadow and no rounded corner.",
+    "keyCharacteristics": [
+      "Fog ground (night: near-black), ink text, 10% and 22% ink hairlines, shared token for token with the photography site.",
+      "Section openers and the foot are ruled in full ink; every other line is a 10% hairline.",
+      "Mona Sans for names, titles and prose; its wide cut (125%) sets the name and section openers. Martian Mono 10.5px condensed uppercase readouts for dates, counts, figure numbers, field labels and media controls.",
+      "One indigo for outbound links inside entries. The rest of the page is achromatic; demo media carries any other colour.",
+      "Figures are numbered down the whole page (FIG. 01–NN), captioned, capped to the figure column, and never full-bleed.",
+      "One ease-out curve, cubic-bezier(0.16, 1, 0.3, 1), for every spatial move."
+    ],
+    "rules": [
+      { "name": "The Outbound Indigo Rule", "body": "Indigo means \"this leaves the page\" and appears nowhere else: never on headings, fills, rules, readouts or hover states of in-page controls. The bar's Photography link and the contact rows stay in the neutral palette; they are navigation and contact, not entry evidence.", "section": "colors" },
+      { "name": "The Shared Ground Rule", "body": "Ground, deep fog, ink, mute and both rules are the photography site's values exactly. Change them in both systems or neither.", "section": "colors" },
+      { "name": "The Measurement Not Costume Rule", "body": "Mono carries data the page actually has (dates, counts, indices, figure numbers) and short field labels and controls sitting on the same line as their value. Never a slogan, never a label stacked above a heading.", "section": "typography" },
+      { "name": "The Fixed Cell Rule", "body": "Indices and figure numbers are zero-padded to two digits (`02 / 03`, `FIG. 05`), and numerals are tabular so a readout changes value without changing width.", "section": "typography" },
+      { "name": "The Three Columns Rule", "body": "When on the left, what in the middle, evidence on the right. A new entry type fits this grid through `content/cv.tsx`; adding one is a data edit, not a component edit.", "section": "layout" },
+      { "name": "The No Shadow Rule", "body": "Nothing casts a shadow. A surface separates by a hairline, an ink rule or an opaque ground fill.", "section": "elevation" },
+      { "name": "The Ink Opener Rule", "body": "A section opens on a full-ink 1px rule with its title and a count readout on one baseline, closed below by a 10% hairline. The ledger closes on the same ink rule at the foot. No other line is ink.", "section": "shapes" }
+    ],
+    "dos": [
+      "Do take every surface colour from ground, deep fog, ink, mute or the ink-alpha rules, with both light and night values identical to the photography site.",
+      "Do reserve indigo for outbound links inside entries, with the arrow on standalone links.",
+      "Do open every section on a full-ink rule and keep every other line a 10% hairline.",
+      "Do put dates, counts and figure numbers in Martian Mono readouts: 10.5px, 87.5% wide, uppercase, 0.03em, tabular, zero-padded to two digits, label mute and value ink.",
+      "Do number every figure in reading order and caption it, with a Play / Pause or YouTube control.",
+      "Do load and play clips only while 25% visible, start them paused under reduced motion, and load YouTube only on click.",
+      "Do add entries in `content/cv.tsx`, not in components."
+    ],
+    "donts": [
+      "Don't use box-shadows, blur, gradient fills, tinted panels or rounded corners.",
+      "Don't wrap entries in cards or mark them with a coloured left border.",
+      "Don't use indigo, or any other hue, for headings, fills, rules, hover states or in-page navigation.",
+      "Don't run media full-bleed, autoplay it off screen, or add WebGL.",
+      "Don't set display, titles or prose in Martian Mono, or readouts in Mona Sans. Don't bring Geist back here; it is the photo site's voice.",
+      "Don't add timers, carousels, or a second easing curve for spatial motion."
+    ]
+  }
+}
