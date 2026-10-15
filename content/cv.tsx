@@ -75,7 +75,7 @@ export const sections: Section[] = [
     title: "Education",
     entries: [
       {
-        when: ["Expected 2029"],
+        when: ["Expected Jun 2028"],
         title: "Bachelor of Science in Computer Science & Mechanical Engineering",
         tags: ["Education"],
         metric: { value: "4.0", label: "GPA" },
