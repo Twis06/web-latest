@@ -117,6 +117,10 @@ export function Viewer({ figures }: { figures: ViewerFigure[] }) {
 }
 
 function Stage({ media }: { media: Media }) {
+  if (media.kind === "set") {
+    const item = media.items[0];
+    return <Stage media={{ kind: "clip", ratio: media.ratio, src: item.src, poster: item.poster, alt: item.alt }} />;
+  }
   if (media.kind === "flight") {
     const run = media.runs[0];
     return <Stage media={{ kind: "clip", ratio: media.ratio, src: run.src, poster: run.poster, alt: `Takeoff point ${run.id}, frame tilted ${run.angle}°` }} />;

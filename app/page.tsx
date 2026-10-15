@@ -25,6 +25,7 @@ for (const section of sections) {
       media.kind === "clip" ? { poster: media.poster, src: media.src } :
       media.kind === "grid" ? { poster: media.clips[0].poster, src: media.clips[0].src } :
       media.kind === "flight" ? { poster: media.runs[0].poster, src: media.runs[0].src } :
+      media.kind === "set" ? { poster: media.items[0].poster, src: media.items[0].src } :
       { poster: media.poster, src: null };
     strip.push({
       n: pad(figureIndex.size + 1),

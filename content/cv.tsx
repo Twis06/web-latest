@@ -13,7 +13,11 @@ export type Media =
   | ({ kind: "clip"; ratio: number } & Clip)
   | { kind: "grid"; ratio: number; clips: Clip[] }
   | { kind: "youtube"; id: string; ratio: number; poster: string; title: string }
-  | { kind: "flight"; ratio: number; angles: number[]; runs: FlightRun[] };
+  | { kind: "flight"; ratio: number; angles: number[]; runs: FlightRun[] }
+  | { kind: "set"; ratio: number; items: SetItem[] };
+
+/** One real test in a set of them, chosen by tab. */
+export type SetItem = { label: string; src: string; poster: string; alt: string; hud?: string[] };
 
 /** One recorded traversal from the drone flight tests: a takeoff point flown through a frame tilted `angle`°. */
 export type FlightRun = { id: number; angle: number; src: string; poster: string };
@@ -213,14 +217,48 @@ export const sections: Section[] = [
           "On hardware: picked 24 unseen objects (8 of 10 attempts on average), hung from a bar under a 500 g load, and pulled a cube out of a pipe.",
         ],
         figure: {
-          caption: "Evolved two-finger rotator turning a cube on hardware",
-          hud: ["Real hardware", "Zero-shot deploy", "Evolved in sim"],
+          caption: "Real-world tests of evolved designs, deployed zero-shot",
+          wide: true,
           media: {
-            kind: "clip",
+            kind: "set",
             ratio: 16 / 9,
-            src: "/cv/evolved-rotator.mp4",
-            poster: "/cv/evolved-rotator.jpg",
-            alt: "An evolved two-finger robot manipulator rotating a Rubik's cube",
+            items: [
+              {
+                label: "Rotate · 2 fingers",
+                src: "/cv/evolved/rotate-2finger.mp4",
+                poster: "/cv/evolved/rotate-2finger.jpg",
+                alt: "Evolved two-finger rotator turning a Rubik's cube",
+                hud: ["Real hardware", "Zero-shot"],
+              },
+              {
+                label: "Rotate · 4 fingers",
+                src: "/cv/evolved/rotate-4finger.mp4",
+                poster: "/cv/evolved/rotate-4finger.jpg",
+                alt: "Evolved four-finger rotator turning six different objects",
+                hud: ["6 objects", "Real hardware"],
+              },
+              {
+                label: "Pick",
+                src: "/cv/evolved/pick.mp4",
+                poster: "/cv/evolved/pick.jpg",
+                alt: "Evolved picker lifting previously unseen objects",
+                hud: ["Unseen objects", "8 of 10 attempts on average"],
+              },
+              {
+                label: "Hang",
+                src: "/cv/evolved/hang.mp4",
+                poster: "/cv/evolved/hang.jpg",
+                alt: "Evolved hanger gripping a bar and hanging under load",
+                hud: ["500 g load"],
+              },
+              {
+                label: "Retrieve",
+                src: "/cv/evolved/retrieve.mp4",
+                poster: "/cv/evolved/retrieve.jpg",
+                alt: "Evolved retriever pulling a cube out of a pipe",
+                hud: ["Cube from a pipe"],
+              },
+            ],
           },
         },
       },

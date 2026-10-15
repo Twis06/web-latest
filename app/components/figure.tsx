@@ -4,6 +4,7 @@ import Image from "next/image";
 import { useEffect, useRef, useState, useSyncExternalStore } from "react";
 import type { Clip, Figure as FigureData } from "@/content/cv";
 import { FlightTest } from "./flight-test";
+import { TaskSet } from "./task-set";
 import { attachScrub } from "./scrub";
 import { OPEN_FIGURE } from "./viewer";
 
@@ -29,6 +30,9 @@ export function Figure({ index, n, figure }: { index: number; n: string; figure:
   if (figure.media.kind === "flight") {
     const { ratio, angles, runs } = figure.media;
     return <FlightTest index={index} n={n} caption={figure.caption} ratio={ratio} angles={angles} runs={runs} hud={figure.hud} />;
+  }
+  if (figure.media.kind === "set") {
+    return <TaskSet index={index} n={n} caption={figure.caption} ratio={figure.media.ratio} items={figure.media.items} />;
   }
   return <ClipFigure index={index} n={n} figure={figure} />;
 }
